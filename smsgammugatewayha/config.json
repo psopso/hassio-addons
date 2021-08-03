@@ -1,0 +1,40 @@
+{
+  "name": "sms-gammu-gateway-ha",
+  "version": "1.1",
+  "slug": "sms_gammu_gateway_ha",
+  "description": "sms-gammu-gateway-ha add-on",
+  "uart": true,
+  "url": "https://github.com/pajikos/sms-gammu-gateway",
+  "startup": "application",
+  "boot": "auto",
+  "arch": [
+    "aarch64",
+    "amd64",
+    "armhf",
+    "armv7",
+    "i386"
+  ],
+  "map": [
+  ],
+  "ports": {
+    "5000/tcp": 5000
+  },
+  "ports_description": {
+    "5000/tcp": "REST port - do not change!"
+  },
+  "devices": [
+    "/dev/ttyS0:/dev/mobile"
+  ],
+  "map": [
+    "config:rw",
+    "addons:rw"
+  ],
+  "options": {
+    "device":"/dev/mobile",
+    "nomodem":"0"
+  },
+  "schema": {
+    "device": "str?",
+    "nomodem": "int?"
+  }
+}
