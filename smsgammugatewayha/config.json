@@ -9,7 +9,7 @@
   "boot": "auto",
   "arch": [
     "aarch64",
-    "armv7",
+    "armv7"
   ],
   "map": [
   ],
