@@ -1,5 +1,5 @@
 {
-  "name": "Home Assistant Add-on: smsgammugatewayha",
-  "url": "https://github.com/psopso/smsgammugatewayha",
+  "name": "Home Assistant Add-ons:",
+  "url": "https://github.com/psopso/hassio-addons",
   "maintainer": "Petr Sourada <pso@seznam.cz>"
 }
