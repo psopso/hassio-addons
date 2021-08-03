@@ -36,5 +36,6 @@
   "schema": {
     "device": "str?",
     "nomodem": "int?"
-  }
+  },
+  "image": "psopso/smsgammugatewayha"
 }
