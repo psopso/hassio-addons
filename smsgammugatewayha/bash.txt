@@ -1,9 +1,0 @@
-function bashio::addon.port() {
-    local port=${1:-}
-    local slug=${2:-'self'}
-
-    # Default to TCP if not specified.
-    if [[ "${port}" != *"/"* ]]; then
-        port="${port}/tcp"
-    fi
-}
