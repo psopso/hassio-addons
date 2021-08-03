@@ -4,7 +4,7 @@
   "slug": "sms_gammu_gateway_ha",
   "description": "sms-gammu-gateway-ha add-on",
   "uart": true,
-  "url": "https://github.com/pajikos/sms-gammu-gateway",
+  "url": "https://github.com/psopso/smsgammugatewayha",
   "startup": "application",
   "boot": "auto",
   "arch": [
