@@ -8,7 +8,7 @@ echo $port
 echo $device
 echo $nomodem
 
-echo [gammu1] > gammu.config
+echo [gammu] > gammu.config
 echo device = $device >> gammu.config
 echo 'name = SIM7600X-4G-HAT' >> gammu.config
 echo 'connection = at' >> gammu.config
