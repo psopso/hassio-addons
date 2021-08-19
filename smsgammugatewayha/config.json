@@ -19,9 +19,6 @@
   "ports_description": {
     "5000/tcp": "REST port - do not change!"
   },
-  "devices": [
-    "/dev/ttyS0:/dev/mobile"
-  ],
   "map": [
     "config:rw",
     "addons:rw"
