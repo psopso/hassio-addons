@@ -1,0 +1,137 @@
+Host/volume 						Path in container
+/dev 							/dev
+/usr/share/hassio/addons/data/a0d7b954_influxdb 	/data
+/usr/share/hassio/ssl 					/ssl
+/usr/share/hassio/share 				/share
+
+/var/lib/influxdb2
+
+docker run -p 8086:8086 \
+  --name influxdb2 \
+  -v /usr/share/hassio/addons/data/a0d7b954_influxdb:/data \
+  -v /usr/share/hassio/addons/data/influxdb2/data:/var/lib/influxdb2 \
+  -v /usr/share/hassio/addons/data/influxdb2/etc:/etc/influxdb2 \
+  -v /home/pi/influxupg/influxdb.conf:/etc/influxdb/influxdb.conf \
+  -v /dev:/dev \
+  -v /usr/share/hassio/ssl:/ssl \
+  -v /usr/share/hassio/share:/share \
+  -e DOCKER_INFLUXDB_INIT_MODE=upgrade \
+  -e DOCKER_INFLUXDB_INIT_USERNAME=homeassistant \
+  -e DOCKER_INFLUXDB_INIT_PASSWORD=influxdb,3390 \
+  -e DOCKER_INFLUXDB_INIT_ORG=homeorg \
+  -e DOCKER_INFLUXDB_INIT_BUCKET=home_assistant \
+  -e DOCKER_INFLUXDB_INIT_UPGRADE_V1_CONFIG=/etc/influxdb/influxdb.conf \
+  influxdb:2.5
+
+/usr/share/hassio/addons/data/local_influx2db 	/data
+/etc/influxdb2/influx-configs
+
+# syntax=docker/dockerfile:1
+FROM golang
+RUN --mount=type=bind,target=/root/.cache/go-build \
+
+docker run -p 8086:8086 \
+  --name influx2 \
+  -v /usr/share/hassio/addons/data/a0d7b954_influxdb:/data \
+  -v /usr/share/hassio/addons/data/influxdb2:/data2 \
+  -v /dev:/dev \
+  -v /usr/share/hassio/ssl:/ssl \
+  -v /usr/share/hassio/share:/share \
+  -v /home/pi/influxupg/influxdb.conf:/etc/influxdb/influxdb.conf \
+  -e DOCKER_INFLUXDB_INIT_MODE=upgrade \
+  -e DOCKER_INFLUXDB_INIT_USERNAME=homeassistant \
+  -e DOCKER_INFLUXDB_INIT_PASSWORD=influxdb,3390 \
+  -e DOCKER_INFLUXDB_INIT_ORG=homeorg \
+  -e DOCKER_INFLUXDB_INIT_BUCKET=home_assistant \
+  -e DOCKER_INFLUXDB_INIT_UPGRADE_V1_CONFIG=/etc/influxdb/influxdb.conf \
+  -e INFLUXD_CONFIG_PATH=/data/config.toml \
+  -e INFLUXD_BOLT_PATH=/data/influxdb.bolt \
+  -e INFLUXD_ENGINE_PATH=/data/influxdb2/engine \
+  influxdb:2.0
+
+
+docker run -p 8086:8086 \
+  --name influx2 \
+  -v /usr/share/hassio/addons/data/a0d7b954_influxdb:/data \
+#  -v $PWD/influxdb.conf:/root/influxdb/influxdb.conf:ro \
+  -v /usr/share/hassio/addons/data/influxdb2:/data \
+#  -v influxdb2:/root/influxdb2 \
+  -v /dev:/dev
+  -v /usr/share/hassio/ssl:/ssl
+  -v /usr/share/hassio/share:/share
+  -e DOCKER_INFLUXDB_INIT_MODE=upgrade \
+  -e DOCKER_INFLUXDB_INIT_USERNAME=homeassistant \
+  -e DOCKER_INFLUXDB_INIT_PASSWORD=influxdb,3390 \
+  -e DOCKER_INFLUXDB_INIT_ORG=homeorg \
+  -e DOCKER_INFLUXDB_INIT_BUCKET=home_assistant \
+  -e DOCKER_INFLUXDB_INIT_UPGRADE_V1_CONFIG=/etc/influxdb/influxdb.conf \
+  -e INFLUXD_CONFIG_PATH=/data/config.toml \
+  -e INFLUXD_BOLT_PATH=/data/influxdb.bolt \
+  -e INFLUXD_ENGINE_PATH=/data/influxdb2/engine \
+  influxdb:2.0
+
+docker run -p 8086:8086 \
+  --name influx2 \
+  -v /usr/share/hassio/addons/data/a0d7b954_influxdb:/data \
+  -v /usr/share/hassio/addons/data/influxdb2:/data \
+  -v influxdb2:/etc/influxdb2 \
+  -e DOCKER_INFLUXDB_INIT_MODE=upgrade \
+  -e DOCKER_INFLUXDB_INIT_USERNAME=homeassistant \
+  -e DOCKER_INFLUXDB_INIT_PASSWORD=influx,3390 \
+  -e DOCKER_INFLUXDB_INIT_ORG=home \
+  -e DOCKER_INFLUXDB_INIT_BUCKET=home_assistant \
+  influxdb:2.0
+
+docker run -p 8086:8086 \
+  -v influxdb:/var/lib/influxdb \
+  -v $PWD/influxdb.conf:/etc/influxdb/influxdb.conf:ro \
+  -v influxdb2:/var/lib/influxdb2 \
+  -v influxdb2:/etc/influxdb2 \
+  -e DOCKER_INFLUXDB_INIT_MODE=upgrade \
+  -e DOCKER_INFLUXDB_INIT_USERNAME=my-user \
+  -e DOCKER_INFLUXDB_INIT_PASSWORD=my-password \
+  -e DOCKER_INFLUXDB_INIT_ORG=my-org \
+  -e DOCKER_INFLUXDB_INIT_BUCKET=my-bucket \
+  influxdb:2.0
+
+reporting-disabled = false
+[meta]
+  dir = "/data/influxdb/meta"
+
+[data]
+  dir = "/data/influxdb/data"
+  engine = "tsm1"
+  wal-dir = "/data/influxdb/wal"
+
+[http]
+  auth-enabled=true
+  realm = "Hass.io InfluxDB"
+  log-enabled=false
+  https-enabled=false
+  https-certificate="/etc/ssl/influxdb.pem"
+  https-private-key=""
+  flux-enabled = true
+
+[logging]
+    level="warn"
+
+
+
+
+docker run --name influxdb -p 8086:8086 --volume g:\influx2:/var/lib/influxdb2 --volume g:\influx2:/etc/influxdb2 influxdb:2.0.9
+docker run -p 8087:8086 -v g:\influx:/var/lib/influxdb -v g:\influx:/etc/influxdb influxdb:1.8
+
+CREATE DATABASE home_assistant
+
+172.30.33.7
+
+
+1487
+
+
+influx config create --config-name <config-name> \
+  --host-url http://localhost:8086 \
+  --org <your-org> \
+  --token <your-auth-token> \
+  --active
+
