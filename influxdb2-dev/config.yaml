@@ -4,7 +4,6 @@ version: dev
 slug: influxdb2-dev
 description: Scalable datastore for metrics, events, and real-time analytics
 url: https://github.com/hassio-addons/addon-influxdb2
-codenotary: codenotary@frenck.dev
 panel_icon: mdi:chart-areaspline
 startup: services
 homeassistant: 0.92.0b2
