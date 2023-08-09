@@ -1,2 +1,2 @@
-INFLUXD_CONFIG_PATH=/etc/influxdb/config.toml
+export INFLUXD_CONFIG_PATH=/etc/influxdb/config.toml
 STDOUT=/proc/1/fd/1

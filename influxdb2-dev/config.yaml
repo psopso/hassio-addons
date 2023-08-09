@@ -3,7 +3,10 @@ name: InfluxDB2-dev
 version: dev
 slug: influxdb2-dev
 description: Scalable datastore for metrics, events, and real-time analytics
-url: https://github.com/hassio-addons/addon-influxdb2
+url: https://github.com/hassio-addons/addon-influxdb
+ingress: true
+ingress_port: 8086
+ingress_stream: false
 panel_icon: mdi:chart-areaspline
 startup: services
 homeassistant: 0.92.0b2
@@ -17,14 +20,14 @@ init: false
 map:
   - share:rw
   - ssl
-  - config:rw
-  - addons:rw
 ports:
   80/tcp: null
   8086/tcp: 8086
+  8088/tcp: 8088
 ports_description:
   80/tcp: Web interface (Not required for Ingress)
   8086/tcp: InfluxDB server
+  8088/tcp: RPC service for backup and restore
 auth_api: true
 options:
   auth: true

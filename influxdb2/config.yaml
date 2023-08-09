@@ -1,5 +1,6 @@
+---
 name: InfluxDB2
-version: 1.0.0
+version: 1.0.1
 slug: influxdb2
 description: Scalable datastore for metrics, events, and real-time analytics
 url: https://github.com/hassio-addons/addon-influxdb
@@ -11,14 +12,14 @@ startup: services
 homeassistant: 0.92.0b2
 hassio_api: true
 arch:
-- aarch64
-- amd64
-- armv7
-- i386
+  - aarch64
+  - amd64
+  - armv7
+  - i386
 init: false
 map:
-- share:rw
-- ssl
+  - share:rw
+  - ssl
 ports:
   80/tcp: null
   8086/tcp: 8086
@@ -43,7 +44,7 @@ schema:
   certfile: str
   keyfile: str
   envvars:
-  - name: match(^INFLUXDB_([A-Z0-9_])+$)
-    value: str
+    - name: match(^INFLUXDB_([A-Z0-9_])+$)
+      value: str
   leave_front_door_open: bool?
 image: psopso/influxdb2

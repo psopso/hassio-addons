@@ -1,2 +1,6 @@
-bolt-path = "/data/data/influxd.bolt"
-engine-path = "/data/data/engine"
+bolt-path = "/data/influxdb/influxd.bolt"
+engine-path = "/data/influxdb/engine"
+log-level = "warn"
+reporting-disabled = false
+tls-cert = "/etc/ssl/influxdb.pem"
+tls-key = ""
