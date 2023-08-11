@@ -36,6 +36,7 @@ options:
   certfile: fullchain.pem
   keyfile: privkey.pem
   envvars: []
+  admintoken: ""
 schema:
   log_level: list(trace|debug|info|notice|warning|error|fatal)?
   auth: bool
@@ -46,4 +47,5 @@ schema:
   envvars:
     - name: match(^INFLUXDB_([A-Z0-9_])+$)
       value: str
+  admintoken: str?
   leave_front_door_open: bool?
