@@ -15,7 +15,7 @@ apt update
 apt install sudo
 
 
-6. Nakopírovat data z Influxu 1: cp -r addons/data/a0d7b954_influxdb/influxdb addons/data/local_influxdb2   #zvolíme správné adresáře
+6. Nakopírovat data z Influxu 1: cp -r addons/data/a0d7b954_influxdb/influxdb addons/data/99d9d1d4_influxdb2   #zvolíme správné adresáře
 7. Spustíme upgrade
 /etc/influxdb2-upgrade.sh
 
