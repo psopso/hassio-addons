@@ -1,3 +1,5 @@
+Upgrade from influxdb 1.8 na influxdb 2
+
 1. Vyzálohovat influxdb verze 
 2. Nainstalovat influxdb2
 3. Pak teprve poprvé spustíme doplňek.
