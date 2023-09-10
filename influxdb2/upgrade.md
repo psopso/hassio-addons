@@ -21,6 +21,6 @@ apt install sudo
 
 7. Stopnout influxd a vygenerovat nový operator token
 kill -9 270
-influxd recovery auth create-operator --bolt-path /data/influxdb/influxd.bolt --username admin --org home
+influxd recovery auth create-operator --bolt-path /data/influxdb/influxd.bolt --username admin --org Home
 
 8. Pak mohu například vytvářet uživatele influx user create -n onemeter -p Onemeter,3390 -o home -t {token}
