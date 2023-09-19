@@ -22,3 +22,15 @@ kill -9 270
 influxd recovery auth create-operator --bolt-path /data/influxdb/influxd.bolt --username admin --org Home
 
 8. Pak mohu například vytvářet uživatele influx user create -n onemeter -p Onemeter,3390 -o home -t {token}
+
+Úprava práv na spuštění, pokud to dělám po windows. Musím být v adresáři, kde je projekt hassio-addons
+git update-index --chmod=+x influxdb2-dev\rootfs\etc\cont-init.d\create-users.sh
+git update-index --chmod=+x influxdb2-dev\rootfs\etc\cont-init.d\influxdb.sh
+git update-index --chmod=+x influxdb2-dev\rootfs\etc\cont-init.d\nginx.sh
+git update-index --chmod=+x influxdb2-dev\rootfs\etc\services.d\nginx\finish
+git update-index --chmod=+x influxdb2-dev\rootfs\etc\services.d\nginx\run
+git update-index --chmod=+x influxdb2-dev\rootfs\etc\services.d\influxdb\finish
+git update-index --chmod=+x influxdb2-dev\rootfs\etc\services.d\influxdb\run
+
+git commit -m "Popis"
+git push
