@@ -5,7 +5,7 @@ slug: influxdb2-dev
 description: Scalable datastore for metrics, events, and real-time analytics
 url: https://github.com/hassio-addons/addon-influxdb
 ingress: true
-ingress_port: 1337
+ingress_port: 1338
 ingress_stream: true
 panel_icon: mdi:chart-areaspline
 startup: services
