@@ -50,7 +50,9 @@ RUN \
     && mkdir -p /var/log/nginx \
     && touch /var/log/nginx/error.log
 
-
+RUN \
+  apk add nginx-plus-module-njs
+  
 # Copy root filesystem
 COPY rootfs /
 
