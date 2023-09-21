@@ -10,7 +10,7 @@ ARG BUILD_ARCH=amd64
 ARG INFLUXDB_VERSION="2.7.1"
 ARG CHRONOGRAF_VERSION="1.10.1"
 ARG KAPACITOR_VERSION="1.5.9-1"
-RUN apk update && apk add wget
+
 
 RUN \
     apt-get update \
