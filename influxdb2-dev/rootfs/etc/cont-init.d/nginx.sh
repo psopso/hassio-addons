@@ -13,7 +13,7 @@ declare keyfile
 
 port=$(bashio::addon.port 80)
 ingress_entry=$(bashio::addon.ingress_entry)
-echo "$ingress_entry" | sed -e 's/^\///' | read ingress_entry_noslash
+ingress_entry_noslash=$(echo "$ingress_entry" | sed -e 's/^\///')
 
 if bashio::var.has_value "${port}"; then
     bashio::config.require.ssl
