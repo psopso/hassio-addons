@@ -27,7 +27,7 @@ RUN    \
     && if [ "${BUILD_ARCH}" = "armv7" ]; then ARCH="armhf"; fi \
     \
     && curl -J -L -o /tmp/influxdb.deb \
-        "https://dl.influxdata.com/influxdb/releases/influxdb2_2.7.5-1_arm64.deb"
+        "https://dl.influxdata.com/influxdb/releases/influxdb2_${INFLUXDB_VERSION}_${ARCH}.deb"
 #    \
 #    && curl -J -L -o /tmp/influxdbclient.deb \
 #        "https://dl.influxdata.com/influxdb/releases/influxdb2-client_${INFLUXDB_VERSION}_${ARCH}.deb" \
