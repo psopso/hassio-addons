@@ -3,7 +3,7 @@
   "version": "dev",
   "slug": "portainer-dev",
   "description": "Manage your Docker environment with ease",
-  "url": "",
+  "url": "https://github.com/hassio-addons/addon-portainer",
   "advanced": true,
   "ingress": true,
   "ingress_stream": true,
