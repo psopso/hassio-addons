@@ -28,7 +28,7 @@ RUN \
     \
     && curl -J -L -o /tmp/influxdb.deb \
         "https://dl.influxdata.com/influxdb/releases/influxdb2_${INFLUXDB_VERSION}_${ARCH}.deb" \
-    \
+#    \
 #    && curl -J -L -o /tmp/influxdbclient.deb \
 #        "https://dl.influxdata.com/influxdb/releases/influxdb2-client_${INFLUXDB_VERSION}_${ARCH}.deb" \
 #    \
@@ -41,9 +41,11 @@ RUN \
     && dpkg --install /tmp/influxdb.deb \
 #    && dpkg --install /tmp/influxdbclient.deb \
 #    && dpkg --install /tmp/chronograf.deb \
-#    && dpkg --install /tmp/kapacitor.deb \
-    \
-    && rm -fr \
+#    && dpkg --install /tmp/kapacitor.deb 
+RUN \
+#    \
+    #&& 
+	rm -fr \
 #        /tmp/* \
         /etc/nginx \
         /var/{cache,log}/* \
