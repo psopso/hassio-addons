@@ -27,7 +27,7 @@ RUN    \
     && if [ "${BUILD_ARCH}" = "armv7" ]; then ARCH="armhf"; fi \
     \
     && curl -J -L -o /tmp/influxdb.deb \
-        "https://dl.influxdata.com/influxdb/releases/influxdb2_${INFLUXDB_VERSION}_${ARCH}.deb" \
+        "https://dl.influxdata.com/influxdb/releases/influxdb2_${INFLUXDB_VERSION}_${ARCH}.deb"
 #    \
 #    && curl -J -L -o /tmp/influxdbclient.deb \
 #        "https://dl.influxdata.com/influxdb/releases/influxdb2-client_${INFLUXDB_VERSION}_${ARCH}.deb" \
@@ -38,7 +38,7 @@ RUN    \
 #    && curl -J -L -o /tmp/kapacitor.deb \
 #        "https://dl.influxdata.com/kapacitor/releases/kapacitor_${KAPACITOR_VERSION}_${ARCH}.deb" \
 #    \
-    && dpkg --install /tmp/influxdb.deb
+#    && dpkg --install /tmp/influxdb.deb
 #    && dpkg --install /tmp/influxdbclient.deb \
 #    && dpkg --install /tmp/chronograf.deb \
 #    && dpkg --install /tmp/kapacitor.deb 
