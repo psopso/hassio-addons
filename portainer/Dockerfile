@@ -5,6 +5,7 @@ FROM ${BUILD_FROM}
 # Set shell
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
+
 # Setup base
 ARG BUILD_ARCH=amd64
 RUN \
