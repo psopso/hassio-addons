@@ -40,7 +40,7 @@ RUN    \
 #        "https://dl.influxdata.com/kapacitor/releases/kapacitor_${KAPACITOR_VERSION}_${ARCH}.deb" \
 RUN  \
      dpkg --install /tmp/influxdb.deb \
-     && dpkg --install /tmp/influxdbclient.deb \
+     && dpkg --install /tmp/influxdbclient.deb
 #    && dpkg --install /tmp/chronograf.deb \
 #    && dpkg --install /tmp/kapacitor.deb 
 RUN \
