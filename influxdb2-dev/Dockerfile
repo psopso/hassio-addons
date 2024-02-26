@@ -30,7 +30,7 @@ RUN \
         "https://dl.influxdata.com/influxdb/releases/influxdb2_${INFLUXDB_VERSION}_${ARCH}.deb" \
     \
     && curl -J -L -o /tmp/influxdbclient.deb \
-        "https://dl.influxdata.com/influxdb/releases/influxdb2-client-${INFLUXDB_VERSION}-${ARCH}.deb" \
+        "https://dl.influxdata.com/influxdb/releases/influxdb2-client_${INFLUXDB_VERSION}_${ARCH}.deb" \
     \
 #    && curl -J -L -o /tmp/chronograf.deb \
 #        "https://dl.influxdata.com/chronograf/releases/chronograf_${CHRONOGRAF_VERSION}_${ARCH}.deb" \
