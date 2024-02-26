@@ -22,7 +22,7 @@ RUN \
     \
     && luarocks install lua-resty-http 0.15-0 
 RUN    \
-    && ARCH="${BUILD_ARCH}" \
+    ARCH="${BUILD_ARCH}" \
     && if [ "${BUILD_ARCH}" = "aarch64" ]; then ARCH="arm64"; fi \
     && if [ "${BUILD_ARCH}" = "armv7" ]; then ARCH="armhf"; fi \
     \
