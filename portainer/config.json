@@ -9,7 +9,7 @@
   "ingress_stream": true,
   "startup": "services",
   "panel_icon": "mdi:docker",
-  "arch": ["amd64", "arm64", "aarch64"],
+  "arch": ["amd64", "arm64", "aarch64", "armhf"],
   "init": false,
   "ports": {
     "8000/tcp": null
