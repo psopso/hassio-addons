@@ -1,0 +1,16 @@
+name: "I2C RGB Cooling HAT"
+description: "RGB Cooling HAT"
+version: "1.0.0"
+slug: "i2c_rgb_cooling_hat"
+init: false
+arch:
+  - aarch64
+  - armhf
+  - armv7
+log_level: info
+startup: services
+privileged:
+  - SYS_ADMIN
+devices:
+  - /dev/i2c-1:/dev/i2c-1:rwm
+device_tree: true

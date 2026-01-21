@@ -1,0 +1,88 @@
+import smbus2
+import time
+import os
+
+class YahboomHAT:
+    # I2C Adresa Yahboom HATu je typicky 0x0d
+    ADDRESS = 0x0d
+    
+    # Registry (podle dokumentace Yahboom protokolu)
+    REG_MODE = 0x00   # 0: Off, 1: Breathing, 2: Float, 3: Rainbow, 4: Static Color
+    REG_SPEED = 0x01  # Rychlost efektů
+    REG_RED = 0x02
+    REG_GREEN = 0x03
+    REG_BLUE = 0x04
+    REG_FAN = 0x08    # Rychlost ventilátoru (0-9)
+
+    def __init__(self, bus_n=1):
+        self.bus = smbus2.SMBus(bus_n)
+
+    def set_fan(self, speed):
+        """Nastaví rychlost ventilátoru 0 (vypnuto) až 9 (max)"""
+        if speed < 0: speed = 0
+        if speed > 9: speed = 9
+        try:
+            self.bus.write_byte_data(self.ADDRESS, self.REG_FAN, int(speed))
+        except Exception as e:
+            print(f"Chyba zápisu ventilátoru: {e}")
+
+    def set_rgb(self, r, g, b):
+        """Nastaví statickou barvu RGB (0-255)"""
+        try:
+            # 1. Nastavit mód na 0x04 (Static Color/Custom)
+            self.bus.write_byte_data(self.ADDRESS, self.REG_MODE, 0x04)
+            # 2. Poslat barvy
+            self.bus.write_byte_data(self.ADDRESS, self.REG_RED, int(r))
+            self.bus.write_byte_data(self.ADDRESS, self.REG_GREEN, int(g))
+            self.bus.write_byte_data(self.ADDRESS, self.REG_BLUE, int(b))
+        except Exception as e:
+            print(f"Chyba zápisu RGB: {e}")
+
+    def set_rgb_off(self):
+        try:
+            self.bus.write_byte_data(self.ADDRESS, self.REG_MODE, 0x00)
+        except Exception as e:
+            print(f"Chyba vypnutí RGB: {e}")
+
+def get_cpu_temp():
+    try:
+        with open("/sys/class/thermal/thermal_zone0/temp", "r") as f:
+            return float(f.read()) / 1000.0
+    except:
+        return 0
+
+# --- HLAVNÍ SMYČKA ---
+if __name__ == "__main__":
+    print("Startuji ovládání Yahboom HAT...")
+    hat = YahboomHAT()
+    
+    # Inicializace - Vypnout RGB, roztočit fan na test
+    hat.set_rgb(0, 0, 255) # Modrá při startu
+    time.sleep(2)
+    hat.set_rgb_off()
+
+    while True:
+        temp = get_cpu_temp()
+        
+        # Logika ovládání (upravte dle libosti)
+        # Teplota < 40°C -> Fan Vypnut
+        # Teplota > 60°C -> Fan Max + Červená LED
+        
+        fan_speed = 0
+        if temp >= 60:
+            fan_speed = 9
+            hat.set_rgb(255, 0, 0) # Červená
+        elif temp >= 50:
+            fan_speed = 5
+            hat.set_rgb(255, 100, 0) # Oranžová
+        elif temp >= 40:
+            fan_speed = 3
+            hat.set_rgb(0, 255, 0) # Zelená
+        else:
+            fan_speed = 0
+            hat.set_rgb_off()
+
+        print(f"CPU: {temp:.1f}°C -> Fan Speed: {fan_speed}")
+        hat.set_fan(fan_speed)
+        
+        time.sleep(10) # Kontrola každých 10 sekund
