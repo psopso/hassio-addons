@@ -6,10 +6,10 @@ This Home Assistant add-on controls the **Yahboom RGB Cooling HAT** for Raspberr
 
 The add-on communicates with the HAT via the I2C bus. The following I2C addresses are used:
 
-\ | Component | I2C Address | Function | 
-\ | :--- | :--- | :--- | 
-\ | **MCU (Fan/RGB)** | `0x0d` | Controls fan speed and RGB LED modes/colors. | 
-\ | **OLED Display** | `0x3c` | 128x32 SSD1306 display for system info. | 
+ | Component | I2C Address | Function | 
+ | :--- | :--- | :--- | 
+ | **MCU (Fan/RGB)** | `0x0d` | Controls fan speed and RGB LED modes/colors. | 
+ | **OLED Display** | `0x3c` | 128x32 SSD1306 display for system info. | 
 
 
 ### Fan Speed Thresholds
