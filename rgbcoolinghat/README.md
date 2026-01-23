@@ -29,6 +29,4 @@ The add-on communicates with the HAT via the I2C bus. The following I2C addresse
 
 ### Troubleshooting
 
-*** OLED "Garbage" or Distorted Pixels:** Ensure the `ssd1306` device is initialized with `height=32`. If the image is upside down, change `rotate=0` to `rotate=2` in the `control.py` initialization.
-
 *** IP Address not displaying:** The add-on uses a socket-based method to ensure compatibility with BusyBox (Alpine Linux).
