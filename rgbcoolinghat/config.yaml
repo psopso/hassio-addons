@@ -14,3 +14,5 @@ privileged:
 devices:
   - /dev/i2c-1:/dev/i2c-1:rwm
 device_tree: true
+image: 
+  psopso/i2c_rgb_cooling_hat-{arch}
