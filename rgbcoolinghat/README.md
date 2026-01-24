@@ -1,4 +1,4 @@
-# Yahboom RGB Cooling HAT Controller for Home Assistant
+# Yahboom RGB Cooling HAT add-on for Home Assistant
 
 This Home Assistant add-on controls the **Yahboom RGB Cooling HAT** for Raspberry Pi. It manages active cooling (fan speed) based on CPU temperature, provides RGB LED status control, and displays system information on the integrated OLED display.
 
