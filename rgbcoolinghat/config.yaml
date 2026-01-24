@@ -1,6 +1,6 @@
 name: "Yahboom RGB Cooling HAT"
 description: "Yahboom RGB Cooling HAT"
-version: "1.0.4"
+version: "1.0.5"
 slug: "yahboom_rgb_cooling_hat"
 init: false
 arch:
