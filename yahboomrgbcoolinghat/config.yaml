@@ -1,5 +1,5 @@
 name: "Yahboom RGB Cooling HAT"
-description: "Yahboom RGB Cooling HAT"
+description: " It manages fan speed) based on CPU temperature, provides RGB LED status control, and displays system information on the integrated OLED display."
 version: "1.0.4"
 slug: "yahboom_rgb_cooling_hat"
 url: "https://github.com/YahboomTechnology/Raspberry-Pi-RGB-Cooling-HAT"
