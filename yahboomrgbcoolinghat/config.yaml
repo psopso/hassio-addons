@@ -2,7 +2,7 @@ name: "Yahboom RGB Cooling HAT"
 description: "Yahboom RGB Cooling HAT"
 version: "1.0.4"
 slug: "yahboom_rgb_cooling_hat"
-"url": "https://github.com/YahboomTechnology/Raspberry-Pi-RGB-Cooling-HAT",
+url: "https://github.com/YahboomTechnology/Raspberry-Pi-RGB-Cooling-HAT"
 init: false
 arch:
   - aarch64
