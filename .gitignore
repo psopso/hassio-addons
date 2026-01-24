@@ -1,2 +1,5 @@
 # Ignore all files with .old
 *.old
+
+# Ignore all files want to hide
+*.hide
