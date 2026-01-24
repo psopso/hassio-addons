@@ -58,7 +58,7 @@ def update_display(temp, fan_speed):
             print(f"IP: {get_ip()}");
             print(f"Temp: {temp:.1f} C");
             print(f"Fan Speed: {fan_speed}/9");
-            print(f" ");
+            print(f"-");
     except Exception as e:
         print(f"Display update error: {e}")
 
