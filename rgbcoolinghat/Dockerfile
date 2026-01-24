@@ -24,7 +24,7 @@ RUN /venv/bin/pip install --break-system-packages smbus2 luma.oled Pillow
 
 # RUN pip3 install smbus2 --break-system-packages
 COPY control.py /
-COPY test.py /
+# COPY test.py /
 COPY run.sh /
 RUN chmod a+x /run.sh
 CMD [ "/run.sh" ]
