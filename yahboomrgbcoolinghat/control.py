@@ -55,8 +55,10 @@ def update_display(temp, fan_speed):
             draw.text((0, 11), f"Temp: {temp:.1f} C", font=font, fill="white")
             draw.text((0, 22), f"Fan Speed: {fan_speed}/9", font=font, fill="white")
             
+            print(f"IP: {get_ip()}");
             print(f"Temp: {temp:.1f} C");
             print(f"Fan Speed: {fan_speed}/9");
+            print("");
     except Exception as e:
         print(f"Display update error: {e}")
 
@@ -73,5 +75,5 @@ if __name__ == "__main__":
         
         hat.set_fan(f_speed)
         update_display(t, f_speed)
-        time.sleep(5)
+        time.sleep(10)
         
