@@ -1,12 +1,10 @@
-name: "I2C RGB Cooling HAT"
-description: "RGB Cooling HAT"
+name: "Yahboom RGB Cooling HAT"
+description: "Yahboom RGB Cooling HAT"
 version: "1.0.4"
-slug: "i2c_rgb_cooling_hat"
+slug: "yahboom_rgb_cooling_hat"
 init: false
 arch:
   - aarch64
-  - armhf
-  - armv7
 log_level: info
 startup: services
 privileged:
@@ -15,4 +13,4 @@ devices:
   - /dev/i2c-1:/dev/i2c-1:rwm
 device_tree: true
 image: 
-  psopso/i2c_rgb_cooling_hat-{arch}
+  psopso/yahboom_rgb_cooling_hat-{arch}
