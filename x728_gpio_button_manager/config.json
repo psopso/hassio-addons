@@ -1,0 +1,18 @@
+{
+  "name": "Suptronics X728 GPIO Button Manager",
+  "version": "0.0.3",
+  "slug": "x728_gpio_button_manager",
+  "description": "Manages Suptronics X728 Button press",
+  "arch": ["aarch64"],
+  "init": false,
+  "url":"https://community.home-assistant.io/t/add-on-hassos-serial-configurator/264169",
+  "privileged": ["SYS_ADMIN", "SYS_RAWIO"],
+  "full_access": true,
+  "boot": "manual",
+  "host_control": true,
+  "devices": [
+    "/dev/gpiochip0"
+  ],
+  "options": {},
+  "schema": {}
+}
