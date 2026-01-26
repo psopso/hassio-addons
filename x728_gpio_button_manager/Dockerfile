@@ -1,5 +1,7 @@
 FROM ghcr.io/home-assistant/aarch64-base:latest
 
+USER root
+
 # Install dependencies
 RUN apk add --no-cache \
     python3 \
@@ -7,7 +9,8 @@ RUN apk add --no-cache \
     libgpiod \
     libgpiod-dev \
     build-base \
-    python3-dev
+    python3-dev \
+    sudo
 
 # Install python library
 RUN pip install --no-cache-dir gpiod requests --break-system-packages
