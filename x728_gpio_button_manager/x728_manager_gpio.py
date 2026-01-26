@@ -4,6 +4,9 @@ import time
 import subprocess
 import sys
 
+import os
+import requests
+
 # --- KONFIGURACE ---
 CHIP_ID = 0
 PIN_BUTTON = 5    # Vstup od tlacitka
@@ -14,14 +17,22 @@ REBOOT_MAX = 0.6  # Maximální délka pro reboot (pokrývá vašich 500ms)
 SHUTDOWN_MIN = 0.6 # Pulz delší než 3s (vašich 50s v "active" stavu)
 
 def run_command(action):
+    url = f"http://supervisor/host/{action}"
+    token = os.environ.get("SUPERVISOR_TOKEN")
+
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Content-Type": "application/json",
+    }
+
     print(f"[X728] Pozadavek na {action} hostitele...", flush=True)
+
     try:
-        subprocess.run(
-            ["ha", "host", action],
-            check=True
-        )
-    except subprocess.CalledProcessError as e:
-        print(f"[X728] Chyba pri volani ha host {action}: {e}", flush=True)
+        r = requests.post(url, headers=headers, timeout=10)
+        if r.status_code != 200:
+            print(f"[X728] Chyba Supervisor API: {r.status_code} {r.text}", flush=True)
+    except Exception as e:
+        print(f"[X728] Chyba pri volani Supervisor API: {e}", flush=True)
 
 def main():
     print(f"[X728] Startuji manager na chipu {CHIP_ID}...", flush=True)

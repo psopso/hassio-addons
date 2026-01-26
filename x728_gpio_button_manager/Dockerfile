@@ -10,7 +10,7 @@ RUN apk add --no-cache \
     python3-dev
 
 # Install python library
-RUN pip install gpiod --break-system-packages
+RUN pip install --no-cache-dir gpiod requests --break-system-packages
 
 # Copy our files
 COPY x728_manager_gpio.py /x728_manager_gpio.py
