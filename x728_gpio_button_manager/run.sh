@@ -1,3 +1,3 @@
 #!/usr/bin/with-contenv bashio
 
-set
+bashio::host.reboot()
