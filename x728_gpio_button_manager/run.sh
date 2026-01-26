@@ -5,4 +5,4 @@ set -e
 
 # bashio::host.reboot
 
-python3 -u /run.py $__BASHIO_SUPERVISOR_TOKEN
+python3 -u /x728_manager_gpio.py $__BASHIO_SUPERVISOR_TOKEN
