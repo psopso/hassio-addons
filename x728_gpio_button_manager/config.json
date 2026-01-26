@@ -13,7 +13,7 @@
   "supervisor_api": true,
   "homeassistant_api": true,
 
-  "full_access": true
+  "full_access": true,
 
   "devices": [
     "/dev/gpiochip0"
