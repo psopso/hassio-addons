@@ -25,4 +25,4 @@ COPY README.md /README.md
 # Run it
 # CMD ["python3", "-u", "/x728_manager_gpio.py"]
 
-CMD ["run.sh"]
+CMD ["/run.sh"]
