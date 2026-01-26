@@ -11,7 +11,7 @@
   "boot": "manual",
   "host_control": true,
   "hassio_api": true,
-  "hassio_role": manager,
+  "hassio_role": "manager",
   "homeassistant_api": true,
   "devices": [
     "/dev/gpiochip0"
