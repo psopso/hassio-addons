@@ -17,6 +17,8 @@ RUN pip install --no-cache-dir gpiod requests --break-system-packages
 
 # Copy our files
 COPY x728_manager_gpio.py /x728_manager_gpio.py
+COPY run.sh /run.sh
+
 COPY README.md /README.md
 
 # Run it
