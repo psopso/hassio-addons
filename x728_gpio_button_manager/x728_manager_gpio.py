@@ -16,24 +16,26 @@ REBOOT_MIN = 0.2  # Minimální délka pro reboot
 REBOOT_MAX = 0.6  # Maximální délka pro reboot (pokrývá vašich 500ms)
 SHUTDOWN_MIN = 0.6 # Pulz delší než 3s (vašich 50s v "active" stavu)
 
-# def run_command(action):
-#     url = f"http://supervisor/host/{action}"
-#     token = os.environ.get("SUPERVISOR_TOKEN")
-# 
-#     headers = {
-#         "Authorization": f"Bearer {token}",
-#         "Content-Type": "application/json",
-#     }
+token = sys.argv[1]
 
-#     print(f"[X728] Pozadavek na {action} hostitele...", flush=True)
+def run_command(action):
+    url = f"http://supervisor/host/{action}"
+    #token = os.environ.get("SUPERVISOR_TOKEN")
 
-#     try:
-#         r = requests.post(url, headers=headers, timeout=10)
-#         if r.status_code != 200:
-#             print(f"[X728] Chyba Supervisor API: {r.status_code} {r.text}", flush=True)
-#     except Exception as e:
-#         print(f"[X728] Chyba pri volani Supervisor API: {e}", flush=True)
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Content-Type": "application/json",
+    }
 
+    print(f"[X728] Pozadavek na {action} hostitele...", flush=True)
+
+    try:
+        r = requests.post(url, headers=headers, timeout=10)
+        if r.status_code != 200:
+            print(f"[X728] Chyba Supervisor API: {r.status_code} {r.text}", flush=True)
+    except Exception as e:
+        print(f"[X728] Chyba pri volani Supervisor API: {e}", flush=True)
+'''
 def run_command(action):
     """Volání Bashio pro ovládání hostitele"""
     # Bashio příkazy se v HA add-onech spouštějí takto:
@@ -43,6 +45,7 @@ def run_command(action):
         subprocess.run(cmd, check=True)
     except Exception as e:
         print(f"Chyba při komunikaci s Bashio: {e}")
+'''
 
 def main():
     print(f"[X728] Startuji manager na chipu {CHIP_ID}...", flush=True)
