@@ -1,3 +1,6 @@
 #!/usr/bin/with-contenv bashio
+set -e
 
-bashio::host.reboot
+bashio::log.info "Called to power off Home Assistant!!!"
+
+bashio::host.shutdown
