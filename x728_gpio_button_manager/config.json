@@ -12,7 +12,6 @@
   "hassio_api": true,
   "host_control": true,
   "supervisor_api": true,
-  "homeassistant_api": true,
 
   "devices": [
     "/dev/gpiochip0"
