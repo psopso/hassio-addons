@@ -16,9 +16,12 @@ SHUTDOWN_MIN = 0.6 # Pulz delší než 3s (vašich 50s v "active" stavu)
 def run_command(action):
     print(f"[X728] Pozadavek na {action} hostitele...", flush=True)
     try:
-        subprocess.run(["bashio", f"host.{action}"], check=True)
-    except Exception as e:
-        print(f"[X728] Chyba Bashio: {e}", flush=True)
+        subprocess.run(
+            ["ha", "host", action],
+            check=True
+        )
+    except subprocess.CalledProcessError as e:
+        print(f"[X728] Chyba pri volani ha host {action}: {e}", flush=True)
 
 def main():
     print(f"[X728] Startuji manager na chipu {CHIP_ID}...", flush=True)
