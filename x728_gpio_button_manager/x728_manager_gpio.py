@@ -99,7 +99,7 @@ def main():
                             elif duration > SHUTDOWN_MIN:
                                 print(f"[X728] Detekovan dlouhy pulz ({duration:.1f}s) -> SHUTDOWN", flush=True)
                                 run_command("shutdown")
-                        elif 
+                        else: 
                             if start_time == 0: continue
                             if duration > SHUTDOWN_MIN:
                                 duration = time.time() - start_time
