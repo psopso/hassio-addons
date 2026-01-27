@@ -70,39 +70,32 @@ def main():
         ) as lines:
 
             print(f"[X728] GPIO{PIN_ENABLE} nastaven na ACTIVE. Cekam na tlacitko...", flush=True)
-
             start_time = 0
-            shutdown_sent = False
 
             while True:
                 if lines.wait_edge_events(timeout=None):
                     for event in lines.read_edge_events():
-
+                        
+                        # Tlacitko stisknuto (nebo zacatek 50s pulzu)
                         if event.event_type == gpiod.EdgeEvent.Type.RISING_EDGE:
                             start_time = time.time()
-                            shutdown_sent = False
                             print("[X728] Pin 5 -> HIGH", flush=True)
+                        
+                        # Tlacitko pusteno (nebo konec 50s pulzu)
+                        elif event.event_type == gpiod.EdgeEvent.Type.FALLING_EDGE:
+                            if start_time == 0: continue
+                            duration = time.time() - start_time
+                            print(f"[X728] Pin 5 -> LOW (trvani: {duration:.2f}s)", flush=True)
 
-                            # Aktivně sleduj délku pulzu
-                            while True:
-                                val = lines.get_value(PIN_BUTTON)
-                                elapsed = time.time() - start_time
-
-                                if not shutdown_sent and elapsed > SHUTDOWN_MIN:
-                                    print(f"[X728] Dlouhy pulz {elapsed:.1f}s -> SHUTDOWN", flush=True)
-                                    run_command("shutdown")
-                                    shutdown_sent = True
-
-                                if val == Value.INACTIVE:
-                                    print(f"[X728] Pin 5 -> LOW (trvani: {elapsed:.2f}s)", flush=True)
-
-                                    if REBOOT_MIN <= elapsed <= REBOOT_MAX:
-                                        print("[X728] Kratky stisk -> REBOOT", flush=True)
-                                        run_command("reboot")
-
-                                    break
-
-                                time.sleep(0.05)
+                            # Logika rozhodovani
+                            if REBOOT_MIN <= duration <= REBOOT_MAX:
+                                print("[X728] Detekovan kratky stisk -> REBOOT", flush=True)
+                                run_command("reboot")
+                                # Neukoncujeme skript hned, aby deska citila PIN_ENABLE az do konce
+                            
+                            elif duration > SHUTDOWN_MIN:
+                                print(f"[X728] Detekovan dlouhy pulz ({duration:.1f}s) -> SHUTDOWN", flush=True)
+                                run_command("shutdown")
 
                 time.sleep(0.01)
 
