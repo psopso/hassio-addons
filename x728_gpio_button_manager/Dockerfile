@@ -7,10 +7,8 @@ RUN apk add --no-cache \
     python3 \
     py3-pip \
     libgpiod \
-    libgpiod-dev \
     build-base \
     python3-dev \
-    sudo
 
 # Install python library
 RUN pip install --no-cache-dir gpiod requests --break-system-packages

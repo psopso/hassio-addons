@@ -12,6 +12,7 @@
   "hassio_api": true,
   "host_control": true,
   "supervisor_api": true,
+  "hassio_role": manager
 
   "devices": [
     "/dev/gpiochip0"
