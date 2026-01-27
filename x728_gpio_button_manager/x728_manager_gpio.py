@@ -100,8 +100,12 @@ def main():
                                 print(f"[X728] Detekovan dlouhy pulz ({duration:.1f}s) -> SHUTDOWN", flush=True)
                                 run_command("shutdown")
                         elif 
-                            pin5high = pin5high
-                            #start_time = 0
+                            if start_time == 0: continue
+                            if duration > SHUTDOWN_MIN:
+                                duration = time.time() - start_time
+                                pin5high = false
+                                start_time = 0
+                                run_command("shutdown")
 
                 time.sleep(0.01)
 
