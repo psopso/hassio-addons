@@ -90,6 +90,9 @@ def main():
 
                                 if not shutdown_sent and elapsed > SHUTDOWN_MIN:
                                     print(f"[X728] Dlouhy pulz {elapsed:.1f}s -> SHUTDOWN", flush=True)
+                                    print("System bude vypnut za 1 minutu.")
+                                    time.sleep(60)
+				    lines.setvalue(PIN_ENABLE, Value.INACTIVE)
                                     run_command("shutdown")
                                     shutdown_sent = True
 
