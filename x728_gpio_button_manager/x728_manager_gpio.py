@@ -17,7 +17,7 @@ REBOOT_MAX = 0.6  # Maximální délka pro reboot (pokrývá vašich 500ms)
 SHUTDOWN_MIN = 0.6 # Pulz delší než 3s (vašich 50s v "active" stavu)
 
 token = sys.argv[1]
-pin5high = false
+pin5high = False
 
 def run_command(action):
     url = f"http://supervisor/host/{action}"
@@ -79,14 +79,14 @@ def main():
                         
                         # Tlacitko stisknuto (nebo zacatek 50s pulzu)
                         if event.event_type == gpiod.EdgeEvent.Type.RISING_EDGE:
-                            pin5high = true
+                            pin5high = True
                             start_time = time.time()
                             print("[X728] Pin 5 -> HIGH", flush=True)
                         
                         # Tlacitko pusteno (nebo konec 50s pulzu)
                         elif event.event_type == gpiod.EdgeEvent.Type.FALLING_EDGE:
                             if start_time == 0: continue
-                            pin5high = false
+                            pin5high = False
                             duration = time.time() - start_time
                             print(f"[X728] Pin 5 -> LOW (trvani: {duration:.2f}s)", flush=True)
 
@@ -103,7 +103,7 @@ def main():
                             if start_time == 0: continue
                             if duration > SHUTDOWN_MIN:
                                 duration = time.time() - start_time
-                                pin5high = false
+                                pin5high = False
                                 start_time = 0
                                 run_command("shutdown")
 
