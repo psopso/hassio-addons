@@ -92,7 +92,7 @@ def main():
                                     print(f"[X728] Dlouhy pulz {elapsed:.1f}s -> SHUTDOWN", flush=True)
                                     print("Vypínání systému začne za 1 minutu.")
                                     time.sleep(60)
-				    lines.setvalue(PIN_ENABLE, Value.INACTIVE)
+				    lines.set_value(PIN_ENABLE, Value.INACTIVE)
                                     run_command("shutdown")
                                     shutdown_sent = True
 
