@@ -39,7 +39,7 @@ def run_command(action):
 def read_voltage(bus):
     data = bus.read_i2c_block_data(MAX17040_ADDR, VOLTAGE_REG, 2)
     raw = (data[0] << 8) | data[1]
-    voltage = raw * 1.25 / 1000
+    voltage = raw * 1.25 / 1000 / 16
     return round(voltage, 2)
 
 def main():
