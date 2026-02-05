@@ -7,7 +7,7 @@ RUN apk add --no-cache \
     py3-pip \
     libgpiod
 
-RUN pip install --no-cache-dir gpiod requests --break-system-packages
+RUN pip install --no-cache-dir gpiod requests smbus2 --break-system-packages
 
 COPY x728_manager_gpio.py /x728_manager_gpio.py
 COPY run.sh /run.sh
