@@ -115,7 +115,7 @@ def main():
 if __name__ == "__main__":
     main()
 
-[all]
+##[all]
 ## Settings for Geekworm x728 v2.5
 ## cut power after shutdown
 #dtoverlay=gpio-poweroff,gpiopin=26,timeout_ms=6000 # early x728 versions is GPIO 13
