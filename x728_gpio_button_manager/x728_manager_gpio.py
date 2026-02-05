@@ -1,56 +1,52 @@
 import gpiod
 from gpiod.line import Direction, Edge, Value
 import time
-import subprocess
 import sys
-
-import os
 import requests
+from smbus2 import SMBus
 
 # --- KONFIGURACE ---
 CHIP_ID = 0
-PIN_BUTTON = 5    # Vstup od tlacitka
-PIN_ENABLE = 12   # Boot OK / Power Management pin
+PIN_BUTTON = 5
+PIN_ENABLE = 12
 
-REBOOT_MIN = 0.2  # Minimální délka pro reboot
-REBOOT_MAX = 0.6  # Maximální délka pro reboot (pokrývá vašich 500ms)
-SHUTDOWN_MIN = 0.6 # Pulz delší než 3s (vašich 50s v "active" stavu)
+REBOOT_MIN = 0.2
+REBOOT_MAX = 0.6
+SHUTDOWN_MIN = 0.6
+
+I2C_BUS = 1
+MAX17040_ADDR = 0x36
+VOLTAGE_REG = 0x02
+LOW_VOLTAGE = 3.2       # hranice vypnutí
+CHECK_INTERVAL = 10    # sekundy
 
 token = sys.argv[1]
 
 def run_command(action):
     url = f"http://supervisor/host/{action}"
-    #token = os.environ.get("SUPERVISOR_TOKEN")
-
     headers = {
         "Authorization": f"Bearer {token}",
         "Content-Type": "application/json",
     }
-
     print(f"[X728] Pozadavek na {action} hostitele...", flush=True)
-
     try:
         r = requests.post(url, headers=headers, timeout=10)
         if r.status_code != 200:
             print(f"[X728] Chyba Supervisor API: {r.status_code} {r.text}", flush=True)
     except Exception as e:
-        print(f"[X728] Chyba pri volani Supervisor API: {e}", flush=True)
-'''
-def run_command(action):
-    """Volání Bashio pro ovládání hostitele"""
-    # Bashio příkazy se v HA add-onech spouštějí takto:
-    cmd = ["bashio", f"host.{action}"]
-    try:
-        print(f"[X728] Executing {action} via Bashio...")
-        subprocess.run(cmd, check=True)
-    except Exception as e:
-        print(f"Chyba při komunikaci s Bashio: {e}")
-'''
+        print(f"[X728] Chyba API: {e}", flush=True)
+
+def read_voltage(bus):
+    data = bus.read_i2c_block_data(MAX17040_ADDR, VOLTAGE_REG, 2)
+    raw = (data[0] << 8) | data[1]
+    voltage = raw * 1.25 / 1000
+    return round(voltage, 2)
 
 def main():
-    print(f"[X728] Startuji manager na chipu {CHIP_ID}...", flush=True)
+    print(f"[X728] Startuji manager...", flush=True)
 
-    # Definice nastavení pro oba piny
+    bus = SMBus(I2C_BUS)
+
     configs = {
         PIN_BUTTON: gpiod.LineSettings(
             direction=Direction.INPUT,
@@ -58,68 +54,66 @@ def main():
         ),
         PIN_ENABLE: gpiod.LineSettings(
             direction=Direction.OUTPUT,
-            output_value=Value.ACTIVE  # Nastavi GPIO12 na 1 (Active)
+            output_value=Value.ACTIVE
         )
     }
 
-    try:
-        with gpiod.request_lines(
-            f"/dev/gpiochip{CHIP_ID}",
-            consumer="x728-manager",
-            config=configs
-        ) as lines:
+    last_check = 0
+    shutdown_sent = False
 
-            print(f"[X728] GPIO{PIN_ENABLE} nastaven na ACTIVE. Cekam na tlacitko...", flush=True)
+    with gpiod.request_lines(
+        f"/dev/gpiochip{CHIP_ID}",
+        consumer="x728-manager",
+        config=configs
+    ) as lines:
 
-            start_time = 0
-            shutdown_sent = False
+        print(f"[X728] GPIO{PIN_ENABLE} = ACTIVE", flush=True)
 
-            while True:
-                if lines.wait_edge_events(timeout=None):
-                    for event in lines.read_edge_events():
+        while True:
 
-                        if event.event_type == gpiod.EdgeEvent.Type.RISING_EDGE:
-                            start_time = time.time()
-                            shutdown_sent = False
-                            print("[X728] Pin 5 -> HIGH", flush=True)
+            # ---- I2C hlídání baterie ----
+            now = time.time()
+            if now - last_check > CHECK_INTERVAL:
+                last_check = now
+                try:
+                    voltage = read_voltage(bus)
+                    print(f"[X728] Napeti baterie: {voltage} V", flush=True)
 
-                            # Aktivně sleduj délku pulzu
-                            while True:
-                                val = lines.get_value(PIN_BUTTON)
-                                elapsed = time.time() - start_time
+                    if voltage <= LOW_VOLTAGE and not shutdown_sent:
+                        print("[X728] Nizke napeti -> SHUTDOWN", flush=True)
+                        lines.set_value(PIN_ENABLE, Value.INACTIVE)
+                        run_command("shutdown")
+                        shutdown_sent = True
+                except Exception as e:
+                    print(f"[X728] I2C chyba: {e}", flush=True)
 
-                                if not shutdown_sent and elapsed > SHUTDOWN_MIN:
-                                    print(f"[X728] Dlouhy pulz {elapsed:.1f}s -> SHUTDOWN", flush=True)
-                                    print("Vypínání systému začne za 1 minutu.")
-                                    time.sleep(60)
-                                    lines.set_value(PIN_ENABLE, Value.INACTIVE)
-                                    run_command("shutdown")
-                                    shutdown_sent = True
+            # ---- GPIO tlačítko ----
+            if lines.wait_edge_events(timeout=0.5):
+                for event in lines.read_edge_events():
 
-                                if val == Value.INACTIVE:
-                                    print(f"[X728] Pin 5 -> LOW (trvani: {elapsed:.2f}s)", flush=True)
+                    if event.event_type == gpiod.EdgeEvent.Type.RISING_EDGE:
+                        start_time = time.time()
+                        print("[X728] Pin 5 -> HIGH", flush=True)
 
-                                    if REBOOT_MIN <= elapsed <= REBOOT_MAX:
-                                        print("[X728] Kratky stisk -> REBOOT", flush=True)
-                                        run_command("reboot")
+                        while True:
+                            val = lines.get_value(PIN_BUTTON)
+                            elapsed = time.time() - start_time
 
-                                    break
+                            if elapsed > SHUTDOWN_MIN and not shutdown_sent:
+                                print("[X728] Dlouhy stisk -> SHUTDOWN", flush=True)
+                                lines.set_value(PIN_ENABLE, Value.INACTIVE)
+                                run_command("shutdown")
+                                shutdown_sent = True
 
-                                time.sleep(0.05)
+                            if val == Value.INACTIVE:
+                                print(f"[X728] Pin 5 -> LOW ({elapsed:.2f}s)", flush=True)
+                                if REBOOT_MIN <= elapsed <= REBOOT_MAX:
+                                    run_command("reboot")
+                                break
 
-                time.sleep(0.01)
+                            time.sleep(0.05)
 
-    except Exception as e:
-        print(f"[X728] KRITICKA CHYBA: {e}", flush=True)
+            time.sleep(0.1)
 
 if __name__ == "__main__":
     main()
-
-##[all]
-## Settings for Geekworm x728 v2.5
-## cut power after shutdown
-#dtoverlay=gpio-poweroff,gpiopin=26,timeout_ms=6000 # early x728 versions is GPIO 13
-## shutdown automatically on power loss detected, wait 3s before shutdown.
-#dtoverlay=gpio-shutdown,gpio_pin=6,active_low=0,gpio_pull=down,debounce=3000
-## report battery status from x728 to the OS
-#dtoverlay=i2c-sensor,max17040
