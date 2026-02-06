@@ -77,11 +77,11 @@ def main():
                 last_check = now
                 try:
                     voltage = read_voltage(bus)
-                    print(f"[X728] Napeti baterie: {voltage} V", flush=True)
+                    #print(f"[X728] Napeti baterie: {voltage} V", flush=True)
 
                     if voltage <= LOW_VOLTAGE and not shutdown_sent:
                         print("[X728] Nizke napeti -> SHUTDOWN", flush=True)
-                        lines.set_value(PIN_ENABLE, Value.INACTIVE)
+                        #lines.set_value(PIN_ENABLE, Value.INACTIVE)
                         run_command("shutdown")
                         shutdown_sent = True
                 except Exception as e:
