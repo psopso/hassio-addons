@@ -17,7 +17,7 @@ SHUTDOWN_MIN = 0.6
 I2C_BUS = 1
 MAX17040_ADDR = 0x36
 VOLTAGE_REG = 0x02
-LOW_VOLTAGE = 3.2       # hranice vypnutí
+LOW_VOLTAGE = 3.4       # hranice vypnutí
 CHECK_INTERVAL = 10    # sekundy
 
 token = sys.argv[1]
