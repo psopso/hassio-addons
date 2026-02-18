@@ -22,10 +22,11 @@ and performs controlled shutdown or reboot using the Home Assistant Supervisor A
 
 ## Button Behavior
 
-| Action | GPIO5 Signal | Result |
-|--------|-------------|--------|
-| Short press | 0.2 – 0.6 s pulse | Reboot |
-| Long press | > 0.6 s pulse | Shutdown |
+| Action | Button | GPIO5 Signal | Result |
+|--------|------|-------|--------|
+| Short press | 1 – 2 s | 0.2 – 0.6 s pulse | Reboot |
+| Longer press | 3 – 7 s | > 0.6 s pulse | Shutdown |
+| Long press | >8 s | ------------------ | Force Shutdown immediatelly |
 
 GPIO12 is forced HIGH to allow the X728 to report button presses correctly.
 
@@ -95,3 +96,4 @@ Use at your own risk. Improper power handling can damage storage or data.
 ## License
 
 MIT
+
