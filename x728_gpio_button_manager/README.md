@@ -22,4 +22,6 @@ Battery threshold:
 LOW_VOLTAGE = 3.4V
 
 Optional poweroff overlay:
-dtoverlay=gpio-poweroff,gpiopin=13,active_delay_ms=6500,inactive_delay_ms=4000,timeout_ms=20000
+
+    dtoverlay=gpio-poweroff,gpiopin=13,active_delay_ms=6500,inactive_delay_ms=4000,timeout_ms=20000
+
