@@ -1,132 +1,97 @@
 # Suptronics X728 GPIO Button Manager
 
-This Home Assistant add-on provides safe shutdown and reboot handling for the **Suptronics / Geekworm X728 UPS board** on Raspberry Pi.
+This Home Assistant add-on provides safe system shutdown and reboot handling for the **Suptronics / Geekworm X728 UPS HAT** on Raspberry Pi.
 
-It solves two main problems:
+It monitors:
+- the physical power button (GPIO5)
+- the battery voltage via I²C (MAX17040 fuel gauge)
 
-* Properly reacts to the **hardware power button** on the X728 board
-* Automatically shuts down the system when the **battery voltage drops too low**
-
-The add-on runs independently of Home Assistant core logic and communicates directly with:
-* GPIO pins (button and power control)
-* I²C battery monitor (MAX17040)
+and performs controlled shutdown or reboot using the Home Assistant Supervisor API.
 
 ---
 
-## What this add-on does
+## Features
 
-The add-on monitors:
-
-* **GPIO5** – X728 button signal  
-* **GPIO12** – X728 power management enable pin  
-* **I²C MAX17040** – battery voltage sensor  
-
-Based on these signals, it decides whether to:
-
-* Reboot the system
-* Shut down the system safely
-* Power off the X728 board after shutdown (optional)
+- Short button press → system reboot
+- Long button press → system shutdown
+- Automatic shutdown on low battery voltage
+- Safe OS shutdown (no hard power cut)
+- Keeps UPS enabled using GPIO12
 
 ---
 
-## Button behavior (GPIO5)
+## Button Behavior
 
-The X728 board generates a signal on GPIO5 when the physical button is pressed.
+| Action | GPIO5 Signal | Result |
+|--------|-------------|--------|
+| Short press | 0.2 – 0.6 s pulse | Reboot |
+| Long press | > 0.6 s pulse | Shutdown |
 
-This add-on measures how long the signal stays HIGH and reacts as follows:
-
-| Button press duration | Action |
-|-----------------------|--------|
-| 0.2 – 0.6 seconds     | Reboot host |
-| longer than 0.6 sec   | Shutdown host |
-
-### Explanation
-
-* Short press → system reboot  
-* Long press → system shutdown  
-* The shutdown is executed using the Supervisor API (`/host/shutdown`)  
-* No direct GPIO power cut is done by default (to avoid data corruption)
+GPIO12 is forced HIGH to allow the X728 to report button presses correctly.
 
 ---
 
-## Low battery behavior (I²C)
+## Low Battery Protection
 
-The add-on periodically reads battery voltage from the MAX17040 chip via I²C.
+The add-on reads battery voltage from the MAX17040 chip via I²C.
 
-Default behavior:
-
-* Voltage is checked every **10 seconds**
-* If voltage drops below **3.4 V**, shutdown is triggered
-
-| Condition | Action |
-|-----------|--------|
-| Voltage > 3.4 V | Normal operation |
-| Voltage ≤ 3.4 V | Shutdown host |
-
-This prevents filesystem corruption and protects the battery from deep discharge.
-
-### Voltage filtering
-
-Transient read errors (for example 0.0 V readings) are ignored and do not immediately trigger shutdown.
-
----
-
-## GPIO control (PIN_ENABLE)
-
-GPIO12 is set to HIGH at startup to enable proper power management on the X728 board.
-
-Optional power cut after shutdown can be enabled using:
-
+If voltage falls below configured threshold:
 ```
-dtoverlay=gpio-poweroff,gpiopin=13,active_delay_ms=6500,inactive_delay_ms=4000,timeout_ms=20000
+LOW_VOLTAGE = 3.4 V
 ```
-
-(Disabled by default)
-
----
-
-## Requirements
-
-* Raspberry Pi with Suptronics / Geekworm X728 UPS
-* Home Assistant OS
-* I²C enabled
-* MAX17040 present on I²C bus 1 at address `0x36`
+The system will:
+1. Trigger Home Assistant shutdown
+2. Allow OS to power down safely
 
 ---
 
 ## Installation
 
-1. Copy the add-on directory into:
-
+1. Copy this add-on into:
 ```
-/addons/x728_gpio_button_manager
+/addons/local/x728_gpio_button_manager
 ```
 
-2. Add it as a local repository in Home Assistant:
-   * Settings → Add-ons → Add-on Store → Repositories
+2. Restart Supervisor
 
-3. Install and start the add-on
+3. Install the add-on from Local Add-ons
 
-4. Enable I²C in your system
+4. Start add-on
 
 ---
 
-## Safety notes
+## Requirements
 
-* This add-on controls host power state
-* Wrong GPIO configuration may cause power loss
-* Test on a non-critical system first
+- Raspberry Pi with X728 UPS
+- Home Assistant OS or Supervised
+- GPIO and I²C enabled
+- MAX17040 fuel gauge available on I²C bus
 
 ---
 
-## Summary
+## Safety Notes
 
-This add-on provides:
+- This add-on does NOT cut power directly.
+- It relies on proper shutdown using Supervisor API.
+- Optional GPIO power-off overlay can be enabled if desired.
 
-✔ Safe shutdown using the X728 hardware button  
-✔ Automatic shutdown on low battery  
-✔ Independent operation from Home Assistant core  
-✔ No reliance on Home Assistant automations  
+---
 
-It turns the X728 board into a reliable UPS controller for Home Assistant OS.
+## Optional Power Cut Overlay
 
+Example config.txt:
+```
+dtoverlay=gpio-poweroff,gpiopin=13,active_delay_ms=6500,inactive_delay_ms=4000,timeout_ms=20000
+```
+
+---
+
+## Disclaimer
+
+Use at your own risk. Improper power handling can damage storage or data.
+
+---
+
+## License
+
+MIT
