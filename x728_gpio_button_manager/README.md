@@ -4,8 +4,8 @@ This add-on provides safe OS-level power management for the Suptronics / Geekwor
 when used with Home Assistant OS on Raspberry Pi.
 
 Features:
-- Detects short press ‚Üí reboot
-- Detects long press ‚Üí shutdown
+- Detects short press → reboot
+- Detects long press → shutdown
 - Monitors battery voltage via I2C (MAX17040)
 - Automatic shutdown on low voltage
 - Works independently of Home Assistant
@@ -15,8 +15,8 @@ Button: GPIO5
 Enable: GPIO12
 
 Button logic:
-Short press (0.2‚Äď0.6s) ‚Üí reboot
-Long press (>0.6s) ‚Üí shutdown
+Short press (0.2–0.6s) → reboot
+Long press (>0.6s) → shutdown
 
 Battery threshold:
 LOW_VOLTAGE = 3.4V
