@@ -1,18 +1,25 @@
-# X728 GPIO Button Manager
+# Suptronics X728 GPIO Button Manager (Home Assistant Add-on)
 
-This add-on manages the logic for the Geekworm X728 UPS button on Raspberry Pi 4.
+This add-on provides safe OS-level power management for the Suptronics / Geekworm X728 UPS board
+when used with Home Assistant OS on Raspberry Pi.
 
-## Features
+Features:
+- Detects short press ‚Üí reboot
+- Detects long press ‚Üí shutdown
+- Monitors battery voltage via I2C (MAX17040)
+- Automatic shutdown on low voltage
+- Works independently of Home Assistant
 
-* **GPIO12**: Maintains HIGH state to enable XUPS management. (Boot OK signal).
+GPIO:
+Button: GPIO5
+Enable: GPIO12
 
-* **GPIO5**: Monitors button press:
-    - Press on-board blue button 1-2 seconds to reboot
-    - Press on-board blue button 3 seconds to safe shutdown
-    - Press on-board blue button 7-8 seconds to force shutdown
+Button logic:
+Short press (0.2‚Äď0.6s) ‚Üí reboot
+Long press (>0.6s) ‚Üí shutdown
 
-## Requirements
+Battery threshold:
+LOW_VOLTAGE = 3.4V
 
-Ensure the following are set in your addon configuration:
-* "privileged": ["SYS_ADMIN", "SYS_RAWIO"]
-* "host_control": true
+Optional poweroff overlay:
+dtoverlay=gpio-poweroff,gpiopin=13,active_delay_ms=6500,inactive_delay_ms=4000,timeout_ms=20000
