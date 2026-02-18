@@ -11,12 +11,12 @@ Features:
 - Works independently of Home Assistant
 
 GPIO:
-Button: GPIO5
-Enable: GPIO12
+- Button: GPIO5
+- Enable: GPIO12
 
 Button logic:
-Short press (0.2–0.6s) → reboot
-Long press (>0.6s) → shutdown
+- Short press (0.2–0.6s) → reboot
+- Long press (>0.6s) → shutdown
 
 Battery threshold:
 LOW_VOLTAGE = 3.4V
