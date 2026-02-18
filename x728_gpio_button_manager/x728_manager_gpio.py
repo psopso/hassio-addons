@@ -117,3 +117,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+#dtoverlay=gpio-poweroff,gpiopin=13,active_delay_ms=6500,inactive_delay_ms=4000,timeout_ms=20000  #x728
