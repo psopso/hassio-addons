@@ -17,8 +17,9 @@ SHUTDOWN_MIN = 0.6
 I2C_BUS = 1
 MAX17040_ADDR = 0x36
 VOLTAGE_REG = 0x02
-LOW_VOLTAGE = 3.4       # hranice vypnutí
-CHECK_INTERVAL = 10    # sekundy
+LOW_VOLTAGE = 3.4           # hranice vypnutí
+CHECK_INTERVAL = 10         # sekundy
+PRINT_CHECK_INTERVAL = 120   # sekundy
 
 token = sys.argv[1]
 
@@ -59,6 +60,7 @@ def main():
     }
 
     last_check = 0
+    last_print_check = 0
     shutdown_sent = False
 
     with gpiod.request_lines(
@@ -77,7 +79,9 @@ def main():
                 last_check = now
                 try:
                     voltage = read_voltage(bus)
-                    #print(f"[X728] Napeti baterie: {voltage} V", flush=True)
+                    if now - last_print_check > PRINT_CHECK_INTERVAL:
+                        print(f"[X728] Napeti baterie: {voltage} V", flush=True)
+                        last_print_check = now
 
                     if voltage <= LOW_VOLTAGE and not shutdown_sent:
                         print("[X728] Nizke napeti -> SHUTDOWN", flush=True)
