@@ -25,8 +25,8 @@ PRINT_CHECK_INTERVAL = 120
 # MQTT konfigurace (později přes options)
 MQTT_HOST = "core-mosquitto"
 MQTT_PORT = 1883
-MQTT_USER = admin
-MQTT_PASS = Bubak,3390
+MQTT_USER = "admin"
+MQTT_PASS = "Bubak,3390"
 
 MQTT_TOPIC_VOLTAGE = "x728/battery/voltage"
 MQTT_TOPIC_POWERLOSS = "x728/power_loss"
