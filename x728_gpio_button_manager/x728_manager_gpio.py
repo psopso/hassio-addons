@@ -57,9 +57,9 @@ def read_voltage(bus):
 
 def mqtt_connect():
     client = mqtt.Client(
+        mqtt.CallbackAPIVersion.VERSION1,
         client_id="x728-addon",
-        protocol=mqtt.MQTTv311,
-        callback_api_version=4
+        protocol=mqtt.MQTTv311
     )
 
     if MQTT_USER:
