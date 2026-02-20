@@ -1,3 +1,5 @@
+import os
+
 import gpiod
 from gpiod.line import Direction, Edge, Value
 import time
