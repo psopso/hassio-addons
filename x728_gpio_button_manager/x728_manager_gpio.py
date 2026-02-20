@@ -153,10 +153,10 @@ def main():
                 last_power_state = power_state
                 if power_state == Value.ACTIVE:
                     print("[X728] POWER LOSS detected (GPIO6=HIGH)", flush=True)
-                    mqtt_client.publish(f"{MQTT_TOPIC_BASE}/power", "lost", retain=True)
+                    mqtt_client.publish(f"{MQTT_TOPIC_BASE}/power_loss", "lost", retain=True)
                 else:
                     print("[X728] External power restored", flush=True)
-                    mqtt_client.publish(f"{MQTT_TOPIC_BASE}/power", "ok", retain=True)
+                    mqtt_client.publish(f"{MQTT_TOPIC_BASE}/power_loss", "ok", retain=True)
 
             # ----- BUTTON -----
             if lines.wait_edge_events(timeout=0.5):
