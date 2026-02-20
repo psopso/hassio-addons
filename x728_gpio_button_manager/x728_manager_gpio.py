@@ -4,8 +4,9 @@ import time
 import sys
 import requests
 from smbus2 import SMBus
+import paho.mqtt.client as mqtt
 
-# --- KONFIGURACE ---
+# --- KONFIGURACE HW ---
 CHIP_ID = 0
 PIN_BUTTON = 5
 PIN_ENABLE = 12
@@ -17,9 +18,20 @@ SHUTDOWN_MIN = 0.6
 I2C_BUS = 1
 MAX17040_ADDR = 0x36
 VOLTAGE_REG = 0x02
-LOW_VOLTAGE = 3.4           # hranice vypnutí
-CHECK_INTERVAL = 10         # sekundy
-PRINT_CHECK_INTERVAL = 120   # sekundy
+
+CHECK_INTERVAL = 10
+PRINT_CHECK_INTERVAL = 120
+
+# MQTT konfigurace (později přes options)
+MQTT_HOST = "core-mosquitto"
+MQTT_PORT = 1883
+MQTT_USER = admin
+MQTT_PASS = Bubak,3390
+
+MQTT_TOPIC_VOLTAGE = "x728/battery/voltage"
+MQTT_TOPIC_POWERLOSS = "x728/power_loss"
+
+LOW_VOLTAGE = 3.4
 
 token = sys.argv[1]
 
@@ -43,10 +55,19 @@ def read_voltage(bus):
     voltage = raw * 1.25 / 1000 / 16
     return round(voltage, 2)
 
+def mqtt_connect():
+    client = mqtt.Client("x728-addon")
+    if MQTT_USER:
+        client.username_pw_set(MQTT_USER, MQTT_PASS)
+    client.connect(MQTT_HOST, MQTT_PORT, 60)
+    client.loop_start()
+    return client
+
 def main():
-    print(f"[X728] Startuji manager...", flush=True)
+    print("[X728] Startuji manager (MQTT verze)...", flush=True)
 
     bus = SMBus(I2C_BUS)
+    mqtt_client = mqtt_connect()
 
     configs = {
         PIN_BUTTON: gpiod.LineSettings(
@@ -72,22 +93,30 @@ def main():
         print(f"[X728] GPIO{PIN_ENABLE} = ACTIVE", flush=True)
 
         while True:
-
-            # ---- I2C hlídání baterie ----
             now = time.time()
+
+            # ---- I2C baterie ----
             if now - last_check > CHECK_INTERVAL:
                 last_check = now
                 try:
                     voltage = read_voltage(bus)
+
+                    mqtt_client.publish(MQTT_TOPIC_VOLTAGE, voltage, retain=True)
+
+                    if voltage < 4.5:
+                        mqtt_client.publish(MQTT_TOPIC_POWERLOSS, 1, retain=True)
+                    else:
+                        mqtt_client.publish(MQTT_TOPIC_POWERLOSS, 0, retain=True)
+
                     if now - last_print_check > PRINT_CHECK_INTERVAL:
                         print(f"[X728] Napeti baterie: {voltage} V", flush=True)
                         last_print_check = now
 
                     if voltage <= LOW_VOLTAGE and not shutdown_sent:
                         print("[X728] Nizke napeti -> SHUTDOWN", flush=True)
-                        #lines.set_value(PIN_ENABLE, Value.INACTIVE)
                         run_command("shutdown")
                         shutdown_sent = True
+
                 except Exception as e:
                     print(f"[X728] I2C chyba: {e}", flush=True)
 
@@ -105,7 +134,6 @@ def main():
 
                             if elapsed > SHUTDOWN_MIN and not shutdown_sent:
                                 print("[X728] Dlouhy stisk -> SHUTDOWN", flush=True)
-                                #lines.set_value(PIN_ENABLE, Value.INACTIVE)
                                 run_command("shutdown")
                                 shutdown_sent = True
 
@@ -121,5 +149,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-#dtoverlay=gpio-poweroff,gpiopin=13,active_delay_ms=6500,inactive_delay_ms=4000,timeout_ms=20000  #x728
