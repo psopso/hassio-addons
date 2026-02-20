@@ -38,10 +38,20 @@ def on_connect(client, userdata, flags, reason_code, properties=None):
 
 
 def mqtt_connect():
+    mqtt_user = os.environ.get("MQTT_USERNAME")
+    mqtt_pass = os.environ.get("MQTT_PASSWORD")
+
     client = mqtt.Client(
         client_id="x728-addon",
         callback_api_version=mqtt.CallbackAPIVersion.VERSION2
     )
+
+    if mqtt_user and mqtt_pass:
+        client.username_pw_set(mqtt_user, mqtt_pass)
+        print("[X728] MQTT auth enabled", flush=True)
+    else:
+        print("[X728] MQTT without auth", flush=True)
+
     client.on_connect = on_connect
     client.connect(MQTT_HOST, MQTT_PORT, 60)
     client.loop_start()
