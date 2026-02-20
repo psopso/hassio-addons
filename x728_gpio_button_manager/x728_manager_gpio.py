@@ -1,5 +1,4 @@
 import os
-
 import gpiod
 from gpiod.line import Direction, Edge, Value
 import time
@@ -20,20 +19,18 @@ SHUTDOWN_MIN = 0.6
 I2C_BUS = 1
 MAX17040_ADDR = 0x36
 VOLTAGE_REG = 0x02
+SOC_REG = 0x04
 
 LOW_VOLTAGE = 3.4
 CHECK_INTERVAL = 10
 PRINT_CHECK_INTERVAL = 120
 
-#MQTT_HOST = "core-mosquitto"
-MQTT_PORT = 1883
 MQTT_TOPIC_BASE = "x728"
 
 token = sys.argv[1]
 
 MQTT_HOST = os.environ.get("MQTT_HOST")
 MQTT_PORT = int(os.environ.get("MQTT_PORT", 1883))
-MQTT_TOPIC_BASE = "x728"
 
 # ---------------- MQTT ----------------
 
@@ -82,7 +79,6 @@ def run_command(action):
     except Exception as e:
         print(f"[X728] Chyba API: {e}", flush=True)
 
-
 # ---------------- I2C ----------------
 
 def read_voltage(bus):
@@ -91,6 +87,11 @@ def read_voltage(bus):
     voltage = raw * 1.25 / 1000 / 16
     return round(voltage, 2)
 
+def read_capacity(bus):
+    data = bus.read_i2c_block_data(MAX17040_ADDR, SOC_REG, 2)
+    raw = (data[0] << 8) | data[1]
+    capacity = raw / 256
+    return round(capacity, 1)
 
 # ---------------- MAIN ----------------
 
@@ -131,10 +132,16 @@ def main():
                 last_check = now
                 try:
                     voltage = read_voltage(bus)
+                    capacity = read_capacity(bus)
+
+                    power_loss = voltage < 4.0
+
                     mqtt_client.publish(f"{MQTT_TOPIC_BASE}/battery_voltage", voltage, retain=True)
+                    mqtt_client.publish(f"{MQTT_TOPIC_BASE}/battery_capacity", capacity, retain=True)
+                    mqtt_client.publish(f"{MQTT_TOPIC_BASE}/power_loss", str(power_loss).lower(), retain=True)
 
                     if now - last_print > PRINT_CHECK_INTERVAL:
-                        print(f"[X728] Napeti baterie: {voltage} V", flush=True)
+                        print(f"[X728] Napeti: {voltage} V, Kapacita: {capacity} %", flush=True)
                         last_print = now
 
                     if voltage <= LOW_VOLTAGE and not shutdown_sent:
@@ -178,7 +185,6 @@ def main():
                             time.sleep(0.05)
 
             time.sleep(0.1)
-
 
 if __name__ == "__main__":
     main()
