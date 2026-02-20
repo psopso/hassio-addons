@@ -25,12 +25,15 @@ LOW_VOLTAGE = 3.4
 CHECK_INTERVAL = 10
 PRINT_CHECK_INTERVAL = 120
 
-MQTT_HOST = "core-mosquitto"
+#MQTT_HOST = "core-mosquitto"
 MQTT_PORT = 1883
 MQTT_TOPIC_BASE = "x728"
 
 token = sys.argv[1]
 
+MQTT_HOST = os.environ.get("MQTT_HOST")
+MQTT_PORT = int(os.environ.get("MQTT_PORT", 1883))
+MQTT_TOPIC_BASE = "x728"
 
 # ---------------- MQTT ----------------
 
@@ -40,8 +43,12 @@ def on_connect(client, userdata, flags, reason_code, properties=None):
 
 
 def mqtt_connect():
+    mqtt_host = os.environ.get("MQTT_HOST")
+    mqtt_port = int(os.environ.get("MQTT_PORT", 1883))
     mqtt_user = os.environ.get("MQTT_USERNAME")
     mqtt_pass = os.environ.get("MQTT_PASSWORD")
+
+    print(f"[X728] MQTT broker: {mqtt_host}:{mqtt_port}", flush=True)
 
     client = mqtt.Client(
         client_id="x728-addon",
@@ -52,13 +59,12 @@ def mqtt_connect():
         client.username_pw_set(mqtt_user, mqtt_pass)
         print("[X728] MQTT auth enabled", flush=True)
     else:
-        print("[X728] MQTT without auth", flush=True)
+        print("[X728] MQTT WITHOUT AUTH (ERROR)", flush=True)
 
     client.on_connect = on_connect
-    client.connect(MQTT_HOST, MQTT_PORT, 60)
+    client.connect(mqtt_host, mqtt_port, 60)
     client.loop_start()
     return client
-
 
 # ---------------- HOST CONTROL ----------------
 
