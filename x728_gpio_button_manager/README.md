@@ -4,6 +4,7 @@ This Home Assistant add-on provides safe system shutdown and reboot handling for
 
 It monitors:
 - the physical power button (GPIO5)
+- power loss (GPIO6)
 - the battery voltage via I²C (MAX17040 fuel gauge)
 
 and performs controlled shutdown or reboot using the Home Assistant Supervisor API.
@@ -44,6 +45,57 @@ The system will:
 1. Trigger Home Assistant shutdown
 2. Allow OS to power down safely
 
+## MQTT Sensors
+
+This addon publishes several MQTT topics that can be used as Home Assistant sensors:
+
+- `x728/battery_voltage` – current battery voltage (V)
+- `x728/button` – button state (`pressed` / `released`)
+- `x728/event` – events:
+  - `short_press_reboot`
+  - `long_press_shutdown`
+  - `low_battery_shutdown`
+  - `power_loss`
+- `x728/status` – addon status (`online`)
+
+These topics can be mapped to Home Assistant MQTT sensors in `configuration.yaml`.
+
+Example:
+
+```yaml
+mqtt:
+  sensor:
+    - name: "X728 Battery Voltage"
+      state_topic: "x728/battery_voltage"
+      unit_of_measurement: "V"
+      unique_id: "x728_battery_voltage"
+      device:
+        identifiers: ["x728_ups"]
+        name: "X728 UPS"
+        model: "X728"
+        manufacturer: "Geekworm"
+
+    - name: "X728 Battery Capacity"
+      state_topic: "x728/battery_capacity"
+      unit_of_measurement: "%"
+      unique_id: "x728_battery_capacity"
+      device:
+        identifiers: ["x728_ups"]
+        name: "X728 UPS"
+        model: "X728"
+        manufacturer: "Geekworm"
+        
+  binary_sensor:
+    - name: "X728 Power Loss"
+      state_topic: "x728/power_loss"
+      payload_on: "1"
+      payload_off: "0"
+      unique_id: "x728_power_loss"
+      device:
+        identifiers: ["x728_ups"]
+        name: "X728 UPS"
+        model: "X728"
+        manufacturer: "Geekworm"
 ---
 
 ## Installation
@@ -96,4 +148,5 @@ Use at your own risk. Improper power handling can damage storage or data.
 ## License
 
 MIT
+
 
