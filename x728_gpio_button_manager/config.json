@@ -1,6 +1,6 @@
 {
   "name": "Suptronics X728 GPIO Button Manager",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "slug": "x728_gpio_button_manager",
   "description": "This add-on manages the logic for the Geekworm X728 UPS button on Raspberry Pi 4.",
   "url": "https://wiki.geekworm.com/X728",
@@ -8,6 +8,7 @@
   "arch": ["aarch64"],
   "init": false,
   "boot": "manual",
+  "services": ["mqtt:need"],
 
   "hassio_api": true,
   "host_control": true,
