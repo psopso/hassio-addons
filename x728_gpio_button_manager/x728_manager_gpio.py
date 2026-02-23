@@ -171,7 +171,7 @@ def main():
                             elapsed = time.time() - start_time
 
                             if elapsed > SHUTDOWN_MIN and not shutdown_sent:
-                                print("[X728] Dlouhy stisk -> SHUTDOWN", flush=True)
+                                print("[X728] Dlouhy stisk -> SHUTDOWN ({elapsed:.2f}s)", flush=True)
                                 mqtt_client.publish(f"{MQTT_TOPIC_BASE}/event", "long_press_shutdown", retain=True)
                                 run_command("shutdown")
                                 shutdown_sent = True
