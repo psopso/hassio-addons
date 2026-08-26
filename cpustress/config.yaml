@@ -1,6 +1,6 @@
 name: "CPU Stress Test"
 slug: "cpu_stress_test"
-version: "1.1.4"
+version: "1.1.5"
 description: "A simple CPU stress test tool to evaluate processor heating and determine maximum core temperatures."
 url: https://github.com/psopso/hassio-addons/tree/main/cpustress
 arch:
