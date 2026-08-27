@@ -1,0 +1,22 @@
+name: "RPi5 Power Button"
+version: "1.1"
+slug: "power_button"
+description: "Listens to RPi5 power button and triggers Home Assistant events"
+arch:
+  - aarch64
+  - armv7
+init: false
+startup: services
+boot: auto
+devices:
+  - "/dev/input/event0:/dev/input/event0:rwm"
+homeassistant_api: true
+hassio_api: true
+hassio_role: admin
+apparmor: true
+options:
+  long_press_duration: 3.0
+  long_press_behaviour: "shutdown"
+schema:
+  long_press_duration: float(2.0,10.0)?
+  long_press_behaviour: list(shutdown|reboot|reload|none)?

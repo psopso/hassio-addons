@@ -1,0 +1,18 @@
+#!/usr/bin/with-contenv bashio
+
+
+bashio::log.info "Starting Power Button Listener Service..."
+
+# Warten bis das System bereit ist
+sleep 2
+
+# Prüfen ob das Input-Device verfügbar ist
+if [ ! -e "/dev/input/event0" ]; then
+    bashio::log.error "Input device /dev/input/event0 not found!"
+    exit 1
+fi
+
+bashio::log.info "Input device found, starting listener..."
+
+# Python Script als Service ausführen
+exec python3 /power_button.py
