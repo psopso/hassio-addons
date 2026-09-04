@@ -1,0 +1,13 @@
+{
+  "name": "X1201 Poweroff Guard",
+  "version": "0.1.0",
+  "slug": "x1201_poweroff_guard",
+  "description": "Test X1201 poweroff guard.",
+  "arch": ["aarch64"],
+  "boot": "auto",
+  "devices": [
+    "/dev/gpiochip0"
+  ],
+  "options": {},
+  "schema": {}
+}
