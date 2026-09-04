@@ -1,6 +1,6 @@
 {
   "name": "X1201 Poweroff Guard",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "slug": "x1201_poweroff_guard",
   "description": "Test X1201 poweroff guard.",
   "arch": ["aarch64"],
