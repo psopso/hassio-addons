@@ -19,7 +19,7 @@ def shutdown(signum, frame):
 #        print("[X1201] GPIO6 = LOW -> AC ABSENT", flush=True)
 
 #    print(f"[X1201] timestamp = {time.time()}", flush=True)
-    print(f"[X1201] timestamp = {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}", flush=True)
+    print(f"[X1201] timestamp = {datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]}", flush=True)
 
     # ZATÍM NIC NEDĚLAT
     # pouze ukončit addon
