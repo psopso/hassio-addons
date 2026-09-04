@@ -1,0 +1,6 @@
+#!/usr/bin/with-contenv bashio
+bashio::log.info "Proces run skončil, exit kód: ${1}"
+
+# tady místo pro úklid – uložení stavu, zavření spojení apod.
+
+exit "${1}"

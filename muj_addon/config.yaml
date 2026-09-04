@@ -1,0 +1,13 @@
+name: "Muj Addon"
+version: "0.1.0"
+slug: muj_addon
+description: "Nástřel addonu"
+arch:
+  - amd64
+  - aarch64
+  - armv7
+init: false        # důležité – s6 init řeší base image
+startup: application
+boot: auto
+options: {}
+schema: {}
