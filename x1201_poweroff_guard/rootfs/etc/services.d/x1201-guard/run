@@ -1,0 +1,3 @@
+#!/usr/bin/with-contenv bashio
+
+exec python3 -u /x1201_guard.py

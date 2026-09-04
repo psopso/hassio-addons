@@ -10,8 +10,6 @@ RUN apk add --no-cache \
 RUN pip install --no-cache-dir gpiod --break-system-packages
 
 COPY x1201_guard.py /x1201_guard.py
-COPY run.sh /run.sh
-
-RUN chmod +x /run.sh
-
-CMD ["/run.sh"]
+COPY rootfs /
+    
+RUN chmod +x /etc/services.d/x1201-guard/run
