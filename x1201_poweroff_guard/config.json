@@ -1,9 +1,10 @@
 {
   "name": "X1201 Poweroff Guard",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "slug": "x1201_poweroff_guard",
   "description": "Test X1201 poweroff guard.",
   "arch": ["aarch64"],
+  "startup":"initialize",
   "boot": "auto",
   "init": false,
   "hassio_api": true,
