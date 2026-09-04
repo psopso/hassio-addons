@@ -3,6 +3,8 @@ import time
 import gpiod
 from gpiod.line import Direction, Value
 
+from datetime import datetime
+
 CHIP = "/dev/gpiochip0"
 GPIO_AC = 6
 
@@ -16,7 +18,8 @@ def shutdown(signum, frame):
 #    else:
 #        print("[X1201] GPIO6 = LOW -> AC ABSENT", flush=True)
 
-    print(f"[X1201] timestamp = {time.time()}", flush=True)
+#    print(f"[X1201] timestamp = {time.time()}", flush=True)
+    print(f"[X1201] timestamp = {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}", flush=True)
 
     # ZATÍM NIC NEDĚLAT
     # pouze ukončit addon
