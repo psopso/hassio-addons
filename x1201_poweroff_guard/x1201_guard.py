@@ -26,16 +26,16 @@ def shutdown(signum, frame):
 signal.signal(signal.SIGTERM, shutdown)
 signal.signal(signal.SIGINT, shutdown)
 
-with gpiod.request_lines(
-    CHIP,
-    consumer="x1201-poweroff-guard",
-    config={
-        GPIO_AC: gpiod.LineSettings(
-            direction=Direction.INPUT
-        )
-    }
-) as lines:
-
+#with gpiod.request_lines(
+#    CHIP,
+#    consumer="x1201-poweroff-guard",
+#    config={
+#        GPIO_AC: gpiod.LineSettings(
+#            direction=Direction.INPUT
+#        )
+#    }
+#) as lines:
+if true:
     print("[X1201] Guard started", flush=True)
 
     while True:
