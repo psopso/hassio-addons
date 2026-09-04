@@ -9,12 +9,12 @@ GPIO_AC = 6
 def shutdown(signum, frame):
     print("[X1201] SIGTERM received", flush=True)
 
-    value = lines.get_value(GPIO_AC)
+#    value = lines.get_value(GPIO_AC)
 
-    if value == Value.ACTIVE:
-        print("[X1201] GPIO6 = HIGH -> AC PRESENT", flush=True)
-    else:
-        print("[X1201] GPIO6 = LOW -> AC ABSENT", flush=True)
+#    if value == Value.ACTIVE:
+#        print("[X1201] GPIO6 = HIGH -> AC PRESENT", flush=True)
+#    else:
+#        print("[X1201] GPIO6 = LOW -> AC ABSENT", flush=True)
 
     print(f"[X1201] timestamp = {time.time()}", flush=True)
 
@@ -35,7 +35,7 @@ signal.signal(signal.SIGINT, shutdown)
 #        )
 #    }
 #) as lines:
-if true:
+if True:
     print("[X1201] Guard started", flush=True)
 
     while True:
