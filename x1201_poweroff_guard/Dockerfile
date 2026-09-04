@@ -2,7 +2,10 @@ FROM ghcr.io/home-assistant/aarch64-base:latest
 
 USER root
 
-RUN apk add --no-cache python3 libgpiod
+RUN apk add --no-cache \
+    python3 \
+    py3-pip \
+    libgpiod
 
 RUN pip install --no-cache-dir gpiod --break-system-packages
 
