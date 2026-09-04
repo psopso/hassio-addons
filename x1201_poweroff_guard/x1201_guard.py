@@ -39,7 +39,7 @@ signal.signal(signal.SIGINT, shutdown)
 #    }
 #) as lines:
 if True:
-    print("[X1201] Guard started", flush=True)
+    print("[X1201] Poweroff Guard started", flush=True)
 
     while True:
         time.sleep(3600)
