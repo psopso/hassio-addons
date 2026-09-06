@@ -17,7 +17,7 @@ def log(message):
 
 def handle_shutdown(signum, frame):
     log("SIGTERM received")
-    time.sleep(1800)
+    #time.sleep(1800)
     log("Trying to acquire GPIO6...")
 
     try:
