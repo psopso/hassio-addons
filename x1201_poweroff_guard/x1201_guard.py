@@ -1,20 +1,25 @@
 import signal
 import time
+from datetime import datetime, timezone
+
 import gpiod
 from gpiod.line import Direction, Value
+
 
 GPIO_CHIP = "/dev/gpiochip0"
 GPIO_AC = 6
 
 
+def log(message):
+    timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
+    print(f"[{timestamp} UTC] [X1201] {message}", flush=True)
+
+
 def handle_shutdown(signum, frame):
-    print("[X1201] SIGTERM received", flush=True)
+    log("SIGTERM received")
+    log("Trying to acquire GPIO6...")
 
     try:
-        print("[X1201] Trying to acquire GPIO6...", flush=True)
-
-        # GPIO si vezmeme AŽ TEĎ.
-        # Za normálního provozu ho vůbec nedržíme.
         with gpiod.request_lines(
             GPIO_CHIP,
             consumer="x1201-poweroff-guard",
@@ -27,30 +32,22 @@ def handle_shutdown(signum, frame):
 
             value = lines.get_value(GPIO_AC)
 
-            print(
-                f"[X1201] GPIO6 = "
-                f"{'HIGH -> AC PRESENT' if value == Value.ACTIVE else 'LOW -> AC ABSENT'}",
-                flush=True
-            )
-
-            print(
-                f"[X1201] timestamp = {time.time()}",
-                flush=True
-            )
+            if value == Value.ACTIVE:
+                log("GPIO6 = HIGH -> AC PRESENT")
+            else:
+                log("GPIO6 = LOW -> AC ABSENT")
 
     except Exception as e:
-        print(f"[X1201] ERROR acquiring GPIO6: {e}", flush=True)
+        log(f"ERROR acquiring GPIO6: {e}")
 
-    print("[X1201] Exiting", flush=True)
+    log("Exiting")
     raise SystemExit(0)
 
 
 signal.signal(signal.SIGTERM, handle_shutdown)
 signal.signal(signal.SIGINT, handle_shutdown)
 
-print("[X1201] Guard started", flush=True)
+log("Guard started")
 
-# GPIO6 zde NENÍ otevřené.
-# Pouze čekáme na ukončení kontejneru.
 while True:
     time.sleep(3600)
