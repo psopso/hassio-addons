@@ -18,6 +18,10 @@ def log(message):
 def handle_shutdown(signum, frame):
     log("SIGTERM received")
     #time.sleep(1800)
+
+    for i in range(1, 30):
+        log(f"waiting {i}s")
+        time.sleep(1)
     log("Trying to acquire GPIO6...")
 
     try:
