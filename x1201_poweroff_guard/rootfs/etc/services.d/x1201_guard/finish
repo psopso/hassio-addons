@@ -4,9 +4,9 @@ bashio::log.info "Spouštím finish..."
 if [ -f /run/x1201-reboot ]; then
     bashio::log.info "AC was present -> reboot required"
 #    bashio::api.supervisor POST /host/reboot
-    nsenter --target 1 --mount --uts --ipc --net --pid ls /bin
+    nsenter --target 1 --mount --uts --ipc --net --pid echo "systemctl --force reboot"
     sleep 10
 else
     bashio::log.info "AC was absent -> normal shutdown"
-    nsenter --target 1 --mount --uts --ipc --net --pid ls /bin
+    nsenter --target 1 --mount --uts --ipc --net --pid echo "Vystup při AC was absent -> normal shutdown"
 fi
