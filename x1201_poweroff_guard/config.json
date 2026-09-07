@@ -10,7 +10,8 @@
   "hassio_api": true,
   "host_control": true,
   "supervisor_api": true,
-  "host_pid": trueprivileged: [SYS_ADMIN],
+  "host_pid": true,
+  "privileged": ["SYS_ADMIN"],
   "hassio_role": "manager",
   "devices": [
     "/dev/gpiochip0"
