@@ -1,6 +1,6 @@
 {
   "name": "X1201 Poweroff Guard",
-  "version": "0.2.9",
+  "version": "0.3.0",
   "slug": "x1201_poweroff_guard",
   "description": "Test X1201 poweroff guard.",
   "arch": ["aarch64"],
@@ -10,6 +10,7 @@
   "hassio_api": true,
   "host_control": true,
   "supervisor_api": true,
+  "host_pid": "trueprivileged": [SYS_ADMIN],
   "hassio_role": "manager",
   "devices": [
     "/dev/gpiochip0"
