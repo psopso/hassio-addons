@@ -1,0 +1,4 @@
+#!/usr/bin/with-contenv bashio
+bashio::log.info "Spouštím addon..."
+
+exec python3 -u /x1201_guard.py
