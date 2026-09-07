@@ -3,6 +3,8 @@ bashio::log.info "Spouštím finish..."
 
 if [ -f /run/x1201-reboot ]; then
     bashio::log.info "AC was present -> reboot required"
+    bashio::api.supervisor POST /host/reboot
+    sleep 1
 else
     bashio::log.info "AC was absent -> normal shutdown"
 fi
