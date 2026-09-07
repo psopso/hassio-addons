@@ -15,4 +15,4 @@ COPY x1201_guard.py /x1201_guard.py
 
 COPY rootfs /
 
-RUN chmod a+x /etc/services.d/muj_addon/run /etc/services.d/muj_addon/finish
+RUN chmod a+x /etc/services.d/x1201_guard/run /etc/services.d/x1201_guard/finish
