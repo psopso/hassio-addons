@@ -11,44 +11,42 @@ GPIO_AC = 6
 
 
 def log(message):
-    timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
+    timestamp = datetime.now(timezone.utc).strftime(
+        "%Y-%m-%d %H:%M:%S.%f"
+    )[:-3]
+
     print(f"[{timestamp} UTC] [X1201] {message}", flush=True)
 
 
 def handle_shutdown(signum, frame):
     log("SIGTERM received")
+    log("Trying to acquire GPIO6...")
 
-    for attempt in range(10):
-        try:
-            log(f"Trying to acquire GPIO6 (attempt {attempt + 1})...")
+    try:
+        with gpiod.request_lines(
+            GPIO_CHIP,
+            consumer="x1201-poweroff-guard",
+            config={
+                GPIO_AC: gpiod.LineSettings(
+                    direction=Direction.INPUT
+                )
+            }
+        ) as lines:
 
-            with gpiod.request_lines(
-                GPIO_CHIP,
-                consumer="x1201-poweroff-guard",
-                config={
-                    GPIO_AC: gpiod.LineSettings(
-                        direction=Direction.INPUT
-                    )
-                }
-            ) as lines:
+            value = lines.get_value(GPIO_AC)
 
-                value = lines.get_value(GPIO_AC)
+            if value == Value.ACTIVE:
+                log("GPIO6 = HIGH -> AC PRESENT")
+                # Předání informace skriptu finish
+                with open("/run/x1201-reboot", "w") as f:
+                  f.write("1\n")
+            else:
+                log("GPIO6 = LOW -> AC ABSENT")
 
-                if value == Value.ACTIVE:
-                    log("GPIO6 = HIGH -> AC PRESENT")
-                else:
-                    log("GPIO6 = LOW -> AC ABSENT")
+    except Exception as e:
+        log(f"ERROR acquiring GPIO6: {e}")
 
-                break
-
-        except Exception as e:
-            log(f"GPIO6 busy: {e}")
-            time.sleep(0.2)
-
-    else:
-        log("Could not acquire GPIO6")
-
-    log("Exiting")
+    log("Python exiting")
     raise SystemExit(0)
 
 

@@ -1,2 +1,8 @@
 #!/usr/bin/with-contenv bashio
 bashio::log.info "Spouštím finish..."
+
+if [ -f /run/x1201-reboot ]; then
+    bashio::log.info "AC was present -> reboot required"
+else
+    bashio::log.info "AC was absent -> normal shutdown"
+fi
