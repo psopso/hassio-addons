@@ -6,19 +6,29 @@ description: Test X1201 poweroff guard.
 arch: 
   - aarch64
 startup: initialize
-boot: auto
 init: false
 hassio_api: true
+hassio_role: manager
+homeassistant_api: true
+host_network: true
 host_dbus: true
 docker_api: true
 apparmor: false
 host_pid: true
 privileged: 
+  - NET_ADMIN
   - SYS_ADMIN
   - SYS_RAWIO
+  - SYS_TIME
   - SYS_NICE
-hassio_role: manager
-homeassistant_api: true
-host_network: true
 devices:
   - /dev/gpiochip0
+  - /dev/mem
+map:
+  - addons:rw
+  - all_addon_configs:rw
+  - backup:rw
+  - homeassistant_config:rw
+  - media:rw
+  - share:rw
+  - ssl:rw
