@@ -1,6 +1,6 @@
 ---
 name: X1201 Poweroff Guard
-version: 0.5.0
+version: 0.5.1
 slug: x1201_poweroff_guard
 description: Test X1201 poweroff guard.
 arch: 
