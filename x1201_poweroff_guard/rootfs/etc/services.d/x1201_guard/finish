@@ -4,10 +4,10 @@ bashio::log.info "Spouštím finish..."
 if [ -f /run/x1201-reboot ]; then
     bashio::log.info "AC was present -> reboot required"
 #    bashio::api.supervisor POST /host/reboot
-    docker run --rm --privileged --net=host --pid=host -it alpine nsenter --target 1 --mount --uts --ipc --net --pid echo "systemctl --force reboot"
-    docker run --rm --privileged --net=host --pid=host -it alpine nsenter --target 1 --mount --uts --ipc --net --pid systemctl --force reboot
+//    docker run --rm --privileged --net=host --pid=host -it alpine nsenter --target 1 --mount --uts --ipc --net --pid echo "systemctl --force reboot"
+//    docker run --rm --privileged --net=host --pid=host -it alpine nsenter --target 1 --mount --uts --ipc --net --pid systemctl --force reboot
     sleep 2
 else
     bashio::log.info "AC was absent -> normal shutdown"
-    docker run --rm --privileged --net=host --pid=host -it alpine nsenter --target 1 --mount --uts --ipc --net --pid echo "Vystup při AC was absent -> normal shutdown"
+//    docker run --rm --privileged --net=host --pid=host -it alpine nsenter --target 1 --mount --uts --ipc --net --pid echo "Vystup při AC was absent -> normal shutdown"
 fi
