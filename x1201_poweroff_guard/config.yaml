@@ -1,6 +1,6 @@
 ---
 name: X1201 Poweroff Guard
-version: 0.4.4
+version: 0.4.5
 slug: x1201_poweroff_guard
 description: Test X1201 poweroff guard.
 arch: 
@@ -21,6 +21,7 @@ privileged:
   - SYS_RAWIO
   - SYS_TIME
   - SYS_NICE
+full_access: true
 devices:
   - /dev/gpiochip0
   - /dev/mem
