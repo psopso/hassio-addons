@@ -1,12 +1,13 @@
 ---
 name: X1201 Poweroff Guard
-version: 0.4.5
+version: 0.4.6
 slug: x1201_poweroff_guard
 description: Test X1201 poweroff guard.
 arch: 
   - aarch64
 startup: initialize
 init: false
+boot: auto
 hassio_api: true
 hassio_role: manager
 homeassistant_api: true
