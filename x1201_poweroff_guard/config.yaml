@@ -8,13 +8,10 @@ arch:
 startup: initialize
 init: false
 boot: auto
-hassio_api: true
 hassio_role: manager
-host_dbus: true
 docker_api: true
 apparmor: false
 privileged: 
   - SYS_ADMIN
-  - SYS_RAWIO
 devices:
   - /dev/gpiochip0
