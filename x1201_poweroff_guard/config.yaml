@@ -1,6 +1,6 @@
 ---
 name: X1201 Poweroff Guard
-version: 0.4.8
+version: 0.4.9
 slug: x1201_poweroff_guard
 description: Test X1201 poweroff guard.
 arch: 
@@ -13,7 +13,6 @@ hassio_role: manager
 host_dbus: true
 docker_api: true
 apparmor: false
-host_pid: true
 privileged: 
   - SYS_ADMIN
   - SYS_RAWIO
