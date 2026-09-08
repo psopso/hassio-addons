@@ -1,6 +1,6 @@
 #!/usr/bin/with-contenv bashio
 bashio::log.info "Spouštím addon..."
 
-docker run --rm --privileged --net=host --pid=host -it alpine nsenter --target 1 --mount --uts --ipc --net --pid systemctl
+docker run --rm --privileged --net=host --pid=host alpine nsenter --target 1 --mount --uts --ipc --net --pid systemctl
 
 exec python3 -u /x1201_guard.py
