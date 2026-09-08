@@ -1,6 +1,6 @@
 {
   "name": "X1201 Poweroff Guard",
-  "version": "0.3.6",
+  "version": "0.3.7",
   "slug": "x1201_poweroff_guard",
   "description": "Test X1201 poweroff guard.",
   "arch": ["aarch64"],
@@ -8,6 +8,7 @@
   "boot": "auto",
   "init": false,
   "hassio_api": true,
+  "docker_api": true,
   "host_control": true,
   "supervisor_api": true,
   "host_pid": true,
