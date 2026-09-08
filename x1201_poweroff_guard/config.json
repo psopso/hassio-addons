@@ -1,6 +1,6 @@
 {
   "name": "X1201 Poweroff Guard",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "slug": "x1201_poweroff_guard",
   "description": "Test X1201 poweroff guard.",
   "arch": ["aarch64"],
@@ -12,8 +12,10 @@
   "docker_api": true,
   "apparmor": false,
   "host_pid": true,
-  "privileged": ["SYS_ADMIN","SYS_RAWIO"],
+  "privileged": ["SYS_ADMIN","SYS_RAWIO", "SYS_NICE"],
   "hassio_role": "manager",
+  "homeassistant_api": true,
+  "host_network": true,
   "devices": [
     "/dev/gpiochip0"
   ],
