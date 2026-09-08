@@ -4,7 +4,7 @@ version: 0.4.3
 slug: x1201_poweroff_guard
 description: Test X1201 poweroff guard.
 arch: 
-- aarch64
+  - aarch64
 startup: initialize
 boot: auto
 init: false
@@ -14,14 +14,13 @@ docker_api: true
 apparmor: false
 host_pid: true
 privileged: 
-- SYS_ADMIN
-- SYS_RAWIO
-- SYS_NICE
+  - SYS_ADMIN
+  - SYS_RAWIO
+  - SYS_NICE
 hassio_role: manager
 homeassistant_api: true
 host_network: true
 devices:
-- /dev/gpiochip0
-],
+  - /dev/gpiochip0
 options:
 schema:
